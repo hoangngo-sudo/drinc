@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hoangngo-sudo.github.io/drinc/sitemap.xml
