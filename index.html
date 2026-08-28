@@ -67,12 +67,20 @@
 
   <main id="main">
     <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-bg"></div>
+      <div class="hero-overlay"></div>
       <div class="container hero__inner">
         <div class="hero__content">
           <h1 id="hero-title" class="hero__title">Deeper Roots in Christ</h1>
           <p class="hero__sub">We are a Christian Student Club at UIC</p>
           <div class="hero__actions">
-            <a class="btn btn--primary" href="#connect">Start Bible Study</a>
+            <a class="btn btn--primary" href="signup.html">
+              Start Bible Study
+              <svg class="btn__icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+                <path d="m10.75,6.75H1c-.414,0-.75-.336-.75-.75s.336-.75.75-.75h9.75c.414,0,.75.336.75.75s-.336.75-.75.75Z" fill="currentColor" stroke-width="0" />
+                <path d="m7.75,10c-.192,0-.384-.073-.53-.22-.293-.293-.293-.768,0-1.061l2.72-2.72-2.72-2.72c-.293-.293-.293-.768,0-1.061s.768-.293,1.061,0l3.25,3.25c.293.293.293.768,0,1.061l-3.25,3.25c-.146.146-.338.22-.53.22Z" fill="currentColor" stroke-width="0" />
+              </svg>
+            </a>
           </div>
         </div>
       </div>
@@ -90,19 +98,16 @@
         <ul class="programs__grid">
           <li class="program">
             <img class="program__img" src="assets/img/programs-1.webp" alt="Students gathered around a table during a Bible study" width="512" height="384" loading="lazy" />
-            <svg class="program__icon" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" focusable="false"><path fill-rule="evenodd" clip-rule="evenodd" d="M0.924701 12.181C1.9532 10.1468 4.06093 8.74951 6.49999 8.74951C8.93927 8.74951 11.0468 10.148 12.0752 12.181C12.6949 13.4063 12.0204 14.8468 10.7863 15.2759C9.69314 15.6555 8.23199 16.0005 6.49999 16.0005C4.76799 16.0005 3.30712 15.6556 2.21397 15.276C0.978015 14.8468 0.305372 13.4059 0.924701 12.181Z" fill="#C54619"/><path d="M11.0972 8.76225C11.2302 8.7538 11.3643 8.74951 11.4995 8.74951C13.9388 8.74951 16.0463 10.148 17.0747 12.181C17.6944 13.4063 17.0199 14.8468 15.7858 15.2759C14.9163 15.5778 13.8141 15.8578 12.5279 15.9598C13.7239 14.9024 14.2307 13.1194 13.4138 11.5041C12.8655 10.4202 12.0686 9.48058 11.0972 8.76225Z" fill="#C54619" fill-opacity="0.4"/><path fill-rule="evenodd" clip-rule="evenodd" d="M3.75 4.75049C3.75 3.2313 4.98133 2.00049 6.5 2.00049C8.01867 2.00049 9.25 3.2313 9.25 4.75049C9.25 6.26968 8.01867 7.50049 6.5 7.50049C4.98133 7.50049 3.75 6.26968 3.75 4.75049Z" fill="#C54619"/><path fill-rule="evenodd" clip-rule="evenodd" d="M10.0503 7.08782C10.4712 7.34943 10.968 7.50049 11.5 7.50049C13.0187 7.50049 14.25 6.26968 14.25 4.75049C14.25 3.2313 13.0187 2.00049 11.5 2.00049C10.968 2.00049 10.4712 2.15155 10.0503 2.41315C10.4926 3.08366 10.75 3.88692 10.75 4.75049C10.75 5.61405 10.4926 6.41732 10.0503 7.08782Z" fill="#C54619" fill-opacity="0.4"/></svg>
             <h3 class="program__title">Bible Studies</h3>
             <p class="program__desc">Small group or personal Bible studies offered throughout the week: The Gospel of Mark.</p>
           </li>
           <li class="program">
             <img class="program__img" src="assets/img/programs-2.webp" alt="Two smiling students at a Friday night gathering" width="512" height="384" loading="lazy" />
-            <svg class="program__icon" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" focusable="false"><path d="M14.25 7C12.625 7 11.925 8.104 11.453 9.185C11.204 9.755 10.705 10.153 9.96898 10.369C9.57198 10.485 9.34398 10.902 9.45998 11.3C9.57598 11.698 9.98998 11.925 10.391 11.809C10.802 11.688 11.136 11.552 11.5 11.317C11.8639 11.082 12.6324 10.369 12.6324 10.369L12.5467 10.7256C12.4111 11.29 12.0258 11.7619 11.5 12.0078V14.251C11.5 15.216 12.285 16.001 13.25 16.001H15.25C16.215 16.001 17 15.216 17 14.251V9.751C17 8.234 15.766 7 14.25 7Z" fill="currentColor" fill-opacity="0.4"/><path d="M3.74999 7C5.37499 7 6.07499 8.104 6.54699 9.185C6.79599 9.755 7.29499 10.153 8.03099 10.369C8.42799 10.485 8.65599 10.902 8.53999 11.3C8.42399 11.698 8.00999 11.925 7.60899 11.809C7.19799 11.688 6.86392 11.552 6.49999 11.317C6.13605 11.082 5.3676 10.369 5.3676 10.369L5.45328 10.7256C5.5889 11.29 5.97416 11.7619 6.49999 12.0078V14.251C6.49999 15.216 5.71499 16.001 4.74999 16.001H2.74999C1.78499 16.001 0.999986 15.216 0.999986 14.251V9.751C0.999986 8.234 2.23399 7 3.74999 7Z" fill="currentColor" fill-opacity="0.4"/><path d="M14.25 5.5005C15.354 5.5005 16.25 4.6045 16.25 3.5005C16.25 2.3965 15.354 1.5005 14.25 1.5005C13.146 1.5005 12.25 2.3965 12.25 3.5005C12.25 4.6045 13.146 5.5005 14.25 5.5005Z" fill="currentColor"/><path d="M3.75 5.5005C4.854 5.5005 5.75 4.6045 5.75 3.5005C5.75 2.3965 4.854 1.5005 3.75 1.5005C2.646 1.5005 1.75 2.3965 1.75 3.5005C1.75 4.6045 2.646 5.5005 3.75 5.5005Z" fill="currentColor"/></svg>
             <h3 class="program__title">Friday Disciples Night</h3>
             <p class="program__desc">Fridays, 6pm. Join us for reflection sharing, Bible study, food, and fellowship.</p>
           </li>
           <li class="program">
             <img class="program__img" src="assets/img/programs-3.webp" alt="Students clapping together during worship" width="512" height="384" loading="lazy" />
-            <svg class="program__icon" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" focusable="false"><path d="m8.0278,11.7598c-1.0562-.4155-3.0029-1.4575-3.604-2.7251-.6528-1.3735-.063-2.4414.3467-2.9561.0967-.1216.2427-.1987.4106-.2168l1.0635-.1138.4863.4526c.2832.2393.6416.354,1.0117.3193.3696-.0327.7036-.208.9404-.4941.4004-.4844.4229-1.1772.0293-1.7173l-1.0791-1.1929c-.3347-.37-.803-.5914-1.3013-.6152l-1.4375-.0688c-.3667-.0186-.7456.0767-1.0674.2734l-2.0979,1.2833c-.3283.2008-.587.4977-.741.8505L.0313,7.0311l-.0313.1501v8.0688c0,.4142.3358.75.75.75h.5c.4142,0,.75-.3358.75-.75v-1c-.9098-.4775-1-1.5322-1-1.5322,0,0,.9471.6881,1.8833.9141.2524.0609.4868.0703.7388.0879.6377.0439,1.4307.0991,3.2451.9028.3809.1689.8042.1694,1.1929-.0005.3999-.1738.7109-.5107.8535-.9233.271-.7847-.1182-1.6362-.8857-1.939Z" stroke-width="0" fill="currentColor"/><path d="m9.9722,11.7598c1.0562-.4155,3.0029-1.4575,3.604-2.7251.6528-1.3735.063-2.4414-.3467-2.9561-.0967-.1216-.2427-.1987-.4106-.2168l-1.0635-.1138-.4863.4526c-.2832.2393-.6416.354-1.0117.3193-.3696-.0327-.7036-.208-.9404-.4941-.4004-.4844-.4229-1.1772-.0293-1.7173l1.0791-1.1929c.3347-.37.803-.5914,1.3013-.6152l1.4375-.0688c.3667-.0186.7456.0767,1.0674.2734l2.0979,1.2833c.3283.2008.587.4977.741.8505l.957,2.1922.0313.1501v8.0688c0,.4142-.3358.75-.75.75h-.5c-.4142,0-.75-.3358-.75-.75v-1c.9098-.4775,1-1.5322,1-1.5322,0,0-.9471.6881-1.8833.9141-.2524.0609-.4868.0703-.7388.0879-.6377.0439-1.4307.0991-3.2451.9028-.3809.1689-.8042.1694-1.1929-.0005-.3999-.1738-.7109-.5107-.8535-.9233-.271-.7847.1182-1.6362.8857-1.939Z" fill="currentColor" opacity=".4" stroke-width="0"/></svg>
             <h3 class="program__title">Sunday Worship Service</h3>
             <p class="program__desc">Sundays, 11am at Chicago UBF church.</p>
           </li>
@@ -115,8 +120,18 @@
         <div class="testimonial">
           <div class="testimonial__media">
             <div class="testimonial__frame">
-              <video class="testimonial__video" src="assets/video.mp4" autoplay muted loop playsinline aria-label="Student testimonial video"></video>
-              <button class="video-toggle" type="button" aria-label="Pause video" data-video-toggle><span class="video-toggle__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="18px" height="18px" viewBox="0 0 18 18" focusable="false"><path fill-rule="evenodd" clip-rule="evenodd" d="M2 3.75C2 2.78334 2.78393 2 3.75 2H5.25C6.21607 2 7 2.78334 7 3.75V14.25C7 15.2167 6.21607 16 5.25 16H3.75C2.78393 16 2 15.2167 2 14.25V3.75Z" fill="rgba(255, 255, 255, 1)" fill-opacity="0.4" data-color="color-2"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M11 3.75C11 2.78334 11.7839 2 12.75 2H14.25C15.2161 2 16 2.78334 16 3.75V14.25C16 15.2167 15.2161 16 14.25 16H12.75C11.7839 16 11 15.2167 11 14.25V3.75Z" fill="rgba(255, 255, 255, 1)"></path></svg></span></button>
+              <video class="testimonial__video" src="assets/video.mp4" loop playsinline muted aria-label="Student testimonial video" data-video></video>
+              <div class="video-bar" data-video-bar>
+                <button class="video-bar__btn" type="button" aria-label="Play video" data-video-play>
+                  <svg class="video-bar__icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" focusable="false"><path d="M15.1 7.478L5.608 2.222C5.055 1.916 4.402 1.925 3.859 2.245C3.321 2.562 3 3.122 3 3.744V14.256C3 14.878 3.321 15.438 3.859 15.755C4.138 15.919 4.445 16.002 4.754 16.002C5.047 16.002 5.34 15.927 5.608 15.779L15.099 10.523C15.655 10.216 16 9.632 16 9.001C16 8.37 15.655 7.785 15.1 7.478Z" fill="currentColor"/></svg>
+                </button>
+                <span class="video-bar__time" data-video-time role="timer" aria-label="Video time">0:00 / 0:00</span>
+                <div class="video-bar__spacer"></div>
+                <button class="video-bar__btn" type="button" aria-label="Mute video" data-video-mute>
+                  <svg class="video-bar__icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" focusable="false"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.0759 1.61119C10.9072 1.07941 12 1.67539 12 2.664V15.337C12 16.3256 10.9072 16.9216 10.0759 16.3898L4.78051 13H2.25C1.00779 13 0 11.9922 0 10.75V7.25C0 6.00778 1.00779 5 2.25 5H4.78056L10.0759 1.61119Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M15.3287 5.11066C15.6216 4.81777 16.0964 4.81777 16.3893 5.11066C18.5372 7.25855 18.5372 10.7414 16.3893 12.8893C16.0964 13.1822 15.6216 13.1822 15.3287 12.8893C15.0358 12.5964 15.0358 12.1215 15.3287 11.8287C16.8908 10.2665 16.8908 7.73343 15.3287 6.17132C15.0358 5.87843 15.0358 5.40355 15.3287 5.11066Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M13.9454 7.17258C14.2615 7.07665 14.6031 7.19882 14.7867 7.47344C15.403 8.39538 15.403 9.60456 14.7867 10.5265C14.6031 10.8011 14.2615 10.9233 13.9454 10.8274C13.6293 10.7314 13.4132 10.44 13.4132 10.1097V7.89026C13.4132 7.55993 13.6293 7.2685 13.9454 7.17258Z" fill="currentColor"/></svg>
+                </button>
+                <input class="video-bar__volume" type="range" min="0" max="1" step="0.05" value="1" aria-label="Volume" data-video-volume />
+              </div>
             </div>
           </div>
           <div class="testimonial__body">
@@ -208,7 +223,7 @@
         </div>
       </div>
       <div class="cta__wordmark" aria-hidden="true">
-        <svg class="cta__wordmark-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 148.6 55" fill="currentColor">
+        <svg class="cta__wordmark-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 148.6 47.5" fill="currentColor">
           <path d="m39.7 19v-6h-5.5v-3h-3v-3h-25.5v3h2.8v34.5h-2.8v2.9h25.4v-2.8h3v-2.6h5.7v-5.7h2.9v-17.3h-3zm-5.5 20-3.1 0.1v2.7h-5.6v2.7h-8.6v-34.5h8.6v3h5.7v5.7h3v20.3z" />
           <path d="m65.1 22.3v-2.9h-5.6v2.9h-3v-2.9h-2.9v1.3h-2.9v1.6h-1.3v0.7h-3.2v2.9h3v18.7h-3.1v2.9h13.2v-2.9h-2.8v-19.4h5.7v3.3h5.6v-6.2h-2.7z" />
           <polygon points="80.6 44.5 80.6 19.4 76.2 19.4 76.2 22.3 73.5 22.3 73.5 23.1 70.6 23.1 70.6 25.9 73.5 25.9 73.5 44.6 70.6 44.6 70.6 47.5 83.5 47.5 83.5 44.5" />
