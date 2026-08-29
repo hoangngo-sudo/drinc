@@ -10,6 +10,29 @@
   var phone = form.querySelector("[data-phone]");
   var email = form.querySelector("[data-email]");
 
+  function normalizeOptionRows() {
+    Array.prototype.forEach.call(form.querySelectorAll(".option-list"), function (list) {
+      var rows = list.querySelectorAll(".option-row");
+      var tallestRow = 0;
+
+      Array.prototype.forEach.call(rows, function (row) {
+        row.style.minHeight = "";
+        row.style.height = "";
+        tallestRow = Math.max(tallestRow, row.getBoundingClientRect().height);
+      });
+
+      tallestRow = Math.ceil(tallestRow);
+
+      Array.prototype.forEach.call(rows, function (row) {
+        row.style.height = tallestRow + "px";
+      });
+    });
+  }
+
+  normalizeOptionRows();
+  window.addEventListener("resize", normalizeOptionRows);
+  window.addEventListener("load", normalizeOptionRows);
+
   form.addEventListener("submit", function (event) {
     event.preventDefault();
 

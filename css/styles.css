@@ -257,7 +257,7 @@ main,
 .site-nav__cta {
   display: inline-block;
   padding: 8px 18px;
-  border: 1px solid rgba(255, 255, 255, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.278);
   border-radius: 999px;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -853,6 +853,7 @@ main,
 .cta__wordmark {
   margin-top: auto;
   width: 100%;
+  padding-top: 48px;
   overflow: hidden;
   color: #ffffff;
   line-height: 0;
