@@ -163,10 +163,27 @@
     return stepPx > 0 ? stepPx : track.clientWidth;
   }
 
+  function updateGalleryButtons() {
+    var maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
+    prevBtn.disabled = track.scrollLeft <= 1;
+    nextBtn.disabled = track.scrollLeft >= maxScroll - 1;
+  }
+
   function scrollByOne(direction) {
     var target = track.scrollLeft + direction * step();
     target = Math.max(0, Math.min(target, track.scrollWidth - track.clientWidth));
-    track.scrollTo({ left: target, behavior: reduceMotion.matches ? "auto" : "smooth" });
+    var next = Math.round(target);
+    var prev = Math.round(track.scrollLeft);
+    if (next === prev) {
+      prevBtn.disabled = prev <= 1;
+      nextBtn.disabled = prev >= track.scrollWidth - track.clientWidth - 1;
+      return;
+    }
+    // Reflect the boundary state immediately so the control no longer appears
+    // clickable after the interaction has already been committed.
+    prevBtn.disabled = next <= 1;
+    nextBtn.disabled = next >= track.scrollWidth - track.clientWidth - 1;
+    track.scrollTo({ left: next, behavior: reduceMotion.matches ? "auto" : "smooth" });
   }
 
   prevBtn.addEventListener("click", function () {
@@ -176,6 +193,10 @@
   nextBtn.addEventListener("click", function () {
     scrollByOne(1);
   });
+
+  track.addEventListener("scroll", updateGalleryButtons, { passive: true });
+  window.addEventListener("resize", updateGalleryButtons);
+  updateGalleryButtons();
 
   /* --- Hero parallax --- */
   var heroBg = document.querySelector(".hero-bg");

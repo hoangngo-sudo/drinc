@@ -26,27 +26,27 @@
         <p>Who is Jesus? What did he do? And who did he say he was? This fall, we will find the answers to those questions through our study of the book of Mark!</p>
       </header>
 
-      <fieldset class="form-panel">
+      <fieldset class="form-panel" aria-describedby="study-error">
         <legend>Which Bible study time works best for you?<span aria-hidden="true">*</span></legend>
         <div class="option-list">
-          <label class="option-row"><span>Mondays 1pm, Group</span><input type="checkbox" name="bible-study" value="Mondays 1pm" /></label>
-          <label class="option-row"><span>Tuesdays 10am, Group</span><input type="checkbox" name="bible-study" value="Tuesdays 10am" /></label>
-          <label class="option-row"><span>Tuesdays 12pm, Group</span><input type="checkbox" name="bible-study" value="Tuesdays 12pm" /></label>
-          <label class="option-row"><span>Tuesdays 1pm, Group</span><input type="checkbox" name="bible-study" value="Tuesdays 1pm" /></label>
-          <label class="option-row"><span>Tuesdays 6pm, Group</span><input type="checkbox" name="bible-study" value="Tuesdays 6pm" /></label>
-          <label class="option-row"><span>Wednesdays 11:45&ndash;12:45pm, PT West Campus, Group</span><input type="checkbox" name="bible-study" value="Wednesdays 11:45-12:45pm" /></label>
-          <label class="option-row"><span>Wednesdays 3pm, Group</span><input type="checkbox" name="bible-study" value="Wednesdays 3pm" /></label>
-          <label class="option-row"><span>Wednesdays 6pm, Group</span><input type="checkbox" name="bible-study" value="Wednesdays 6pm" /></label>
-          <label class="option-row"><span>Thursdays 11am, Group</span><input type="checkbox" name="bible-study" value="Thursdays 11am" /></label>
-          <label class="option-row"><span>Thursdays 2pm Bible reading, Group</span><input type="checkbox" name="bible-study" value="Thursdays 2pm Bible reading" /></label>
-          <label class="option-row"><span>Thursdays 3pm, Group</span><input type="checkbox" name="bible-study" value="Thursdays 3pm" /></label>
-          <label class="option-row"><span>Thursdays 3pm, Women&rsquo;s Group<small>Ladies only</small></span><input type="checkbox" name="bible-study" value="Thursdays 3pm Women's Group" /></label>
-          <label class="option-row"><span>Thursdays 6pm, Group</span><input type="checkbox" name="bible-study" value="Thursdays 6pm" /></label>
-          <label class="option-row"><span>Fridays 12pm, Group</span><input type="checkbox" name="bible-study" value="Fridays 12pm" /></label>
-          <label class="option-row"><span>Fridays 6pm, Group<small>Romans Bible Study</small></span><input type="checkbox" name="bible-study" value="Fridays 6pm" /></label>
-          <label class="option-row"><span>Personal One-on-One Bible Study<small>With a Bible teacher, tailored to your schedule.</small></span><input type="checkbox" name="bible-study" value="Personal one-on-one" /></label>
+          <label class="option-row"><span>Mondays 1pm, Group</span><input type="checkbox" name="bible-study" value="Mondays 1pm" aria-describedby="study-error" /></label>
+          <label class="option-row"><span>Tuesdays 10am, Group</span><input type="checkbox" name="bible-study" value="Tuesdays 10am" aria-describedby="study-error" /></label>
+          <label class="option-row"><span>Tuesdays 12pm, Group</span><input type="checkbox" name="bible-study" value="Tuesdays 12pm" aria-describedby="study-error" /></label>
+          <label class="option-row"><span>Tuesdays 1pm, Group</span><input type="checkbox" name="bible-study" value="Tuesdays 1pm" aria-describedby="study-error" /></label>
+          <label class="option-row"><span>Tuesdays 6pm, Group</span><input type="checkbox" name="bible-study" value="Tuesdays 6pm" aria-describedby="study-error" /></label>
+          <label class="option-row"><span>Wednesdays 11:45&ndash;12:45pm, PT West Campus, Group</span><input type="checkbox" name="bible-study" value="Wednesdays 11:45-12:45pm" aria-describedby="study-error" /></label>
+          <label class="option-row"><span>Wednesdays 3pm, Group</span><input type="checkbox" name="bible-study" value="Wednesdays 3pm" aria-describedby="study-error" /></label>
+          <label class="option-row"><span>Wednesdays 6pm, Group</span><input type="checkbox" name="bible-study" value="Wednesdays 6pm" aria-describedby="study-error" /></label>
+          <label class="option-row"><span>Thursdays 11am, Group</span><input type="checkbox" name="bible-study" value="Thursdays 11am" aria-describedby="study-error" /></label>
+          <label class="option-row"><span>Thursdays 2pm Bible reading, Group</span><input type="checkbox" name="bible-study" value="Thursdays 2pm Bible reading" aria-describedby="study-error" /></label>
+          <label class="option-row"><span>Thursdays 3pm, Group</span><input type="checkbox" name="bible-study" value="Thursdays 3pm" aria-describedby="study-error" /></label>
+          <label class="option-row"><span>Thursdays 3pm, Women&rsquo;s Group<small>Ladies only</small></span><input type="checkbox" name="bible-study" value="Thursdays 3pm Women's Group" aria-describedby="study-error" /></label>
+          <label class="option-row"><span>Thursdays 6pm, Group</span><input type="checkbox" name="bible-study" value="Thursdays 6pm" aria-describedby="study-error" /></label>
+          <label class="option-row"><span>Fridays 12pm, Group</span><input type="checkbox" name="bible-study" value="Fridays 12pm" aria-describedby="study-error" /></label>
+          <label class="option-row"><span>Fridays 6pm, Group<small>Romans Bible Study</small></span><input type="checkbox" name="bible-study" value="Fridays 6pm" aria-describedby="study-error" /></label>
+          <label class="option-row"><span>Personal One-on-One Bible Study<small>With a Bible teacher, tailored to your schedule.</small></span><input type="checkbox" name="bible-study" value="Personal one-on-one" aria-describedby="study-error" /></label>
         </div>
-        <p class="field-error" data-study-error aria-live="polite"></p>
+        <p class="field-error" id="study-error" data-study-error aria-live="polite"></p>
       </fieldset>
 
       <fieldset class="form-panel">
@@ -68,17 +68,17 @@
         </div>
       </fieldset>
 
-      <fieldset class="form-panel contact-panel">
+      <fieldset class="form-panel contact-panel" aria-describedby="contact-error">
         <legend>How can we reach you?<span aria-hidden="true">*</span></legend>
         <p class="field-help">Phone or email &mdash; either one is fine.</p>
         <div class="contact-fields">
           <label><span>First name</span><input type="text" name="first-name" autocomplete="given-name" placeholder=" " required /></label>
           <label><span>Last name</span><input type="text" name="last-name" autocomplete="family-name" placeholder=" " required /></label>
-          <label class="field-wide"><span>Phone number</span><input type="tel" name="phone" autocomplete="tel" placeholder=" " data-phone /></label>
-          <label class="field-wide"><span>Email</span><input type="email" name="email" autocomplete="email" placeholder=" " data-email /></label>
+          <label class="field-wide"><span>Phone number</span><input type="tel" name="phone" autocomplete="tel" placeholder=" " data-phone aria-describedby="contact-error" /></label>
+          <label class="field-wide"><span>Email</span><input type="email" name="email" autocomplete="email" placeholder=" " data-email aria-describedby="contact-error" /></label>
           <label class="field-wide"><span>Invite code (optional)</span><input type="text" name="invite-code" autocomplete="off" placeholder=" " /></label>
         </div>
-        <p class="field-error" data-contact-error aria-live="polite"></p>
+        <p class="field-error" id="contact-error" data-contact-error aria-live="polite"></p>
       </fieldset>
 
       <p class="privacy-note">Your information stays private.</p>

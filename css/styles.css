@@ -216,6 +216,11 @@ main,
   transform: scale(0.96);
 }
 
+.icon-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
 .site-nav {
   position: fixed;
   top: 0;
@@ -807,6 +812,7 @@ main,
 .cta__link {
   display: inline-flex;
   align-items: center;
+  gap: 8px;
   min-height: 44px;
   padding: 8px 14px;
   border-radius: 999px;
@@ -816,6 +822,13 @@ main,
   text-decoration: none;
   touch-action: manipulation;
   transition: color 150ms ease, background-color 150ms ease, transform 150ms ease;
+}
+
+.cta__icon {
+  display: block;
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
 }
 
 @media (hover: hover) {

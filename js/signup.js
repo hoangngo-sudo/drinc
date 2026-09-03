@@ -41,6 +41,11 @@
 
     studyError.textContent = studySelected ? "" : "Choose at least one Bible study option.";
     contactError.textContent = hasContact ? "" : "Enter a phone number or email address.";
+    Array.prototype.forEach.call(form.querySelectorAll('input[name="bible-study"]'), function (input) {
+      input.setAttribute("aria-invalid", studySelected ? "false" : "true");
+    });
+    phone.setAttribute("aria-invalid", hasContact ? "false" : "true");
+    email.setAttribute("aria-invalid", hasContact ? "false" : "true");
     formStatus.textContent = "";
 
     if (!form.checkValidity()) {
@@ -63,13 +68,22 @@
 
   Array.prototype.forEach.call(form.querySelectorAll('input[name="bible-study"]'), function (input) {
     input.addEventListener("change", function () {
-      if (form.querySelector('input[name="bible-study"]:checked')) studyError.textContent = "";
+      if (form.querySelector('input[name="bible-study"]:checked')) {
+        studyError.textContent = "";
+        Array.prototype.forEach.call(form.querySelectorAll('input[name="bible-study"]'), function (studyInput) {
+          studyInput.setAttribute("aria-invalid", "false");
+        });
+      }
     });
   });
 
   [phone, email].forEach(function (input) {
     input.addEventListener("input", function () {
-      if (phone.value.trim() || email.value.trim()) contactError.textContent = "";
+      if (phone.value.trim() || email.value.trim()) {
+        contactError.textContent = "";
+        phone.setAttribute("aria-invalid", "false");
+        email.setAttribute("aria-invalid", "false");
+      }
     });
   });
 })();
