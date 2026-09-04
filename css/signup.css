@@ -123,12 +123,8 @@ summary {
   background: rgba(209, 72, 31, 0.08);
 }
 
-.orientation-kicker {
-  margin: 0 0 6px;
+#orientation-title {
   color: var(--brand-hover);
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 1.3;
 }
 
 .form-orientation h2 {
