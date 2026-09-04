@@ -119,10 +119,79 @@ summary {
   text-wrap: pretty;
 }
 
+.form-orientation {
+  background: rgba(209, 72, 31, 0.08);
+}
+
+.orientation-kicker {
+  margin: 0 0 6px;
+  color: var(--brand-hover);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.form-orientation h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.orientation-intro {
+  margin: 10px 0 0;
+  color: var(--ink-muted);
+  font-size: 13px;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.orientation-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.orientation-steps li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.orientation-step {
+  flex: 0 0 20px;
+  width: 20px;
+  color: var(--brand-hover);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+  text-align: center;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
 .form-panel legend {
   display: block;
   float: left;
-  margin: 0 0 38px;
+  margin: 0 0 24px;
   width: 100%;
   padding: 0;
   font-size: 15px;
@@ -138,6 +207,14 @@ summary {
   margin-bottom: 0;
 }
 
+.form-panel--study legend {
+  margin-bottom: 0;
+}
+
+.field-help + .option-list {
+  margin-top: 16px;
+}
+
 .field-help {
   margin: 22px 0 0;
   clear: both;
@@ -147,15 +224,12 @@ summary {
 }
 
 .option-list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-auto-rows: 1fr;
   gap: 12px;
   margin-top: 0;
   clear: both;
-}
-
-.form-panel--events .option-list {
-  margin-top: 18px;
 }
 
 .option-row {
@@ -179,11 +253,11 @@ summary {
 
 .option-row small {
   display: block;
-  margin-top: 3px;
+  margin-top: 5px;
   color: var(--ink-muted);
   font-size: 12px;
   font-weight: 400;
-  line-height: 1.3;
+  line-height: 1.4;
 }
 
 .option-row input {
@@ -403,14 +477,16 @@ summary {
   will-change: transform;
 }
 
-.submit-button:active,
+.submit-button:active:not(:disabled),
 .back-link:active {
   transform: scale(0.96);
 }
 
 .submit-button:disabled {
-  cursor: wait;
-  opacity: 0.7;
+  background: var(--ink-muted);
+  cursor: not-allowed;
+  transition: none;
+  will-change: auto;
 }
 
 .field-error {
@@ -446,7 +522,7 @@ summary {
     background: var(--field-hover);
   }
 
-  .submit-button:hover {
+  .submit-button:not(:disabled):hover {
     background: var(--brand-hover);
   }
 }

@@ -26,8 +26,20 @@
         <p>Who is Jesus? What did he do? And who did he say he was? This fall, we will find the answers to those questions through our study of the book of Mark!</p>
       </header>
 
-      <fieldset class="form-panel" aria-describedby="study-error">
-        <legend>Which Bible study time works best for you?<span aria-hidden="true">*</span></legend>
+      <section class="form-panel form-orientation" aria-labelledby="orientation-title">
+        <p class="orientation-kicker">Getting started</p>
+        <h2 id="orientation-title">Join a Bible study</h2>
+        <p class="orientation-intro">You are requesting to join a Bible study. Choose a meeting time first, then share your contact information. We will contact you about a group.</p>
+        <ol class="orientation-steps">
+          <li><span class="orientation-step" aria-hidden="true">1</span><span class="orientation-step-label">Choose a time</span></li>
+          <li><span class="orientation-step" aria-hidden="true">2</span><span class="orientation-step-label">Add contact information</span></li>
+          <li><span class="orientation-step" aria-hidden="true">3</span><span class="orientation-step-label">Receive a response from DRinC</span></li>
+        </ol>
+      </section>
+
+      <fieldset class="form-panel form-panel--study" aria-describedby="study-help study-error">
+        <legend>Which Bible study times work best for you?<span aria-hidden="true">*</span></legend>
+        <p class="field-help" id="study-help">Select all that apply. Each session is 50 minutes.</p>
         <div class="option-list">
           <label class="option-row"><span>Mondays 1pm, Group</span><input type="checkbox" name="bible-study" value="Mondays 1pm" aria-describedby="study-error" /></label>
           <label class="option-row"><span>Tuesdays 10am, Group</span><input type="checkbox" name="bible-study" value="Tuesdays 10am" aria-describedby="study-error" /></label>
@@ -49,6 +61,8 @@
         <p class="field-error" id="study-error" data-study-error aria-live="polite"></p>
       </fieldset>
 
+      <p class="visually-hidden" data-step-status role="status"></p>
+      <div class="signup-later" data-signup-later>
       <fieldset class="form-panel">
         <legend>Do you believe in God?</legend>
         <div class="option-list">
@@ -106,7 +120,8 @@
       </section>
       <button class="submit-button" type="submit">Submit</button>
       <p class="turnstile-protected">Protected by Cloudflare Turnstile</p>
-      <p class="form-status" data-form-status role="status"></p>
+        <p class="form-status" data-form-status role="status"></p>
+      </div>
     </form>
   </main>
   <script src="js/signup.js"></script>

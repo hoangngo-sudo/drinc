@@ -9,32 +9,40 @@
   var formStatus = form.querySelector("[data-form-status]");
   var phone = form.querySelector("[data-phone]");
   var email = form.querySelector("[data-email]");
+  var laterSections = form.querySelector("[data-signup-later]");
+  var stepStatus = form.querySelector("[data-step-status]");
 
-  function normalizeOptionRows() {
-    Array.prototype.forEach.call(form.querySelectorAll(".option-list"), function (list) {
-      var rows = list.querySelectorAll(".option-row");
-      var tallestRow = 0;
-
-      Array.prototype.forEach.call(rows, function (row) {
-        row.style.minHeight = "";
-        row.style.height = "";
-        tallestRow = Math.max(tallestRow, row.getBoundingClientRect().height);
-      });
-
-      tallestRow = Math.ceil(tallestRow);
-
-      Array.prototype.forEach.call(rows, function (row) {
-        row.style.height = tallestRow + "px";
-      });
-    });
+  // Progressive enhancement: with JavaScript disabled the whole form stays visible.
+  if (laterSections) {
+    laterSections.hidden = true;
   }
 
-  normalizeOptionRows();
-  window.addEventListener("resize", normalizeOptionRows);
-  window.addEventListener("load", normalizeOptionRows);
+  var submitButton = form.querySelector(".submit-button");
+  var firstName = form.querySelector('[name="first-name"]');
+  var lastName = form.querySelector('[name="last-name"]');
+
+  function isSignupComplete() {
+    return Boolean(
+      form.querySelector('input[name="bible-study"]:checked') &&
+        firstName.value.trim() &&
+        lastName.value.trim() &&
+        (phone.value.trim() || email.value.trim())
+    );
+  }
+
+  function updateSubmitState() {
+    submitButton.disabled = !isSignupComplete();
+  }
+
+  updateSubmitState();
 
   form.addEventListener("submit", function (event) {
     event.preventDefault();
+
+    // The greyed-out state must always block submission.
+    if (submitButton.disabled) {
+      return;
+    }
 
     var studySelected = form.querySelector('input[name="bible-study"]:checked');
     var hasContact = phone.value.trim() || email.value.trim();
@@ -73,17 +81,27 @@
         Array.prototype.forEach.call(form.querySelectorAll('input[name="bible-study"]'), function (studyInput) {
           studyInput.setAttribute("aria-invalid", "false");
         });
+        if (laterSections && laterSections.hidden) {
+          laterSections.hidden = false;
+          if (stepStatus) {
+            stepStatus.textContent = "You can now add your contact information.";
+          }
+        }
       }
+      updateSubmitState();
     });
   });
 
-  [phone, email].forEach(function (input) {
+  [phone, email, firstName, lastName].forEach(function (input) {
     input.addEventListener("input", function () {
-      if (phone.value.trim() || email.value.trim()) {
-        contactError.textContent = "";
-        phone.setAttribute("aria-invalid", "false");
-        email.setAttribute("aria-invalid", "false");
+      if (input === phone || input === email) {
+        if (phone.value.trim() || email.value.trim()) {
+          contactError.textContent = "";
+          phone.setAttribute("aria-invalid", "false");
+          email.setAttribute("aria-invalid", "false");
+        }
       }
+      updateSubmitState();
     });
   });
 })();
