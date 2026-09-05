@@ -34,7 +34,47 @@
     submitButton.disabled = !isSignupComplete();
   }
 
+  var orientationSteps = form.querySelectorAll(".orientation-step");
+
+  function syncOrientation(announce) {
+    var studySelected = Boolean(form.querySelector('input[name="bible-study"]:checked'));
+    var contactComplete = Boolean(
+      firstName.value.trim() &&
+        lastName.value.trim() &&
+        (phone.value.trim() || email.value.trim())
+    );
+
+    Array.prototype.forEach.call(orientationSteps, function (step) {
+      var n = Number(step.dataset.step);
+      var isComplete =
+        (n === 1 && studySelected) || (n === 2 && contactComplete);
+      var isCurrent =
+        (!studySelected && n === 1) ||
+        (studySelected && !contactComplete && n === 2) ||
+        (contactComplete && n === 3);
+
+      step.classList.toggle("is-complete", isComplete);
+      step.classList.toggle("is-current", isCurrent);
+
+      if (isCurrent) {
+        step.setAttribute("aria-current", "step");
+      } else {
+        step.removeAttribute("aria-current");
+      }
+    });
+
+    if (announce && stepStatus) {
+      var next = contactComplete
+        ? "All set \u2014 your contact information looks good. You can now submit your signup."
+        : studySelected
+          ? "You can now add your contact information."
+          : "Choose at least one Bible study time to get started.";
+      stepStatus.textContent = next;
+    }
+  }
+
   updateSubmitState();
+  syncOrientation(false);
 
   form.addEventListener("submit", function (event) {
     event.preventDefault();
@@ -83,12 +123,10 @@
         });
         if (laterSections && laterSections.hidden) {
           laterSections.hidden = false;
-          if (stepStatus) {
-            stepStatus.textContent = "You can now add your contact information.";
-          }
         }
       }
       updateSubmitState();
+      syncOrientation(true);
     });
   });
 
@@ -102,6 +140,7 @@
         }
       }
       updateSubmitState();
+      syncOrientation(true);
     });
   });
 })();

@@ -13,16 +13,12 @@
   var video = document.querySelector("[data-video]");
   var playBtn = document.querySelector("[data-video-play]");
   var muteBtn = document.querySelector("[data-video-mute]");
-  var volumeSlider = document.querySelector("[data-video-volume]");
+  var progressSlider = document.querySelector("[data-video-progress]");
   var timeDisplay = document.querySelector("[data-video-time]");
 
   if (video) {
     video.volume = 1;
     video.muted = true;
-    if (volumeSlider) {
-      volumeSlider.dataset.prevVol = "1";
-      volumeSlider.value = "0";
-    }
   }
 
   /* SVG templates */
@@ -45,7 +41,16 @@
     timeDisplay.textContent = cur + " / " + dur;
   }
 
-  /* --- Play/pause --- */
+  function updateProgress() {
+    if (!video || !progressSlider) return;
+    if (!isFinite(video.duration) || video.duration === 0) {
+      progressSlider.value = "0";
+      return;
+    }
+    progressSlider.value = String((video.currentTime / video.duration) * 100);
+  }
+
+  /* Play/pause */
   if (video && playBtn) {
     function togglePlay() {
       if (video.paused) {
@@ -68,63 +73,45 @@
       playBtn.innerHTML = SVG_PLAY;
     });
     video.addEventListener("timeupdate", updateTime);
+    video.addEventListener("timeupdate", updateProgress);
     video.addEventListener("loadedmetadata", updateTime);
+    video.addEventListener("loadedmetadata", updateProgress);
   }
 
-  /* --- Mute/unmute --- */
+  /* Seek */
+  if (video && progressSlider) {
+    progressSlider.addEventListener("input", function () {
+      if (!isFinite(video.duration) || video.duration === 0) return;
+      video.currentTime = (parseFloat(progressSlider.value) / 100) * video.duration;
+      updateTime();
+    });
+  }
+
+  /* Mute/unmute */
   if (video && muteBtn) {
     function syncMute() {
       muteBtn.setAttribute("aria-label", video.muted ? "Unmute video" : "Mute video");
       muteBtn.innerHTML = video.muted ? SVG_MUTED : SVG_UNMUTED;
     }
     muteBtn.addEventListener("click", function () {
-      if (video.muted) {
-        /* Unmute: restore the last set volume and re-play with audio */
-        video.muted = false;
-        if (volumeSlider) {
-          volumeSlider.value = volumeSlider.dataset.prevVol || "1";
-          video.volume = parseFloat(volumeSlider.value);
-        }
-        video.play()["catch"](function () {});
-      } else {
-        /* Mute */
-        video.muted = true;
-        if (volumeSlider) {
-          volumeSlider.dataset.prevVol = volumeSlider.value;
-          volumeSlider.value = "0";
-        }
+      video.muted = !video.muted;
+      if (!video.muted) {
+        video.play();
       }
       syncMute();
     });
-    video.addEventListener("volumechange", function () {
-      syncMute();
-      if (volumeSlider) {
-        volumeSlider.value = video.muted ? "0" : String(video.volume);
-      }
-    });
+    video.addEventListener("volumechange", syncMute);
     syncMute();
   }
 
-  /* --- Volume slider --- */
-  if (video && volumeSlider) {
-    volumeSlider.addEventListener("input", function () {
-      video.volume = parseFloat(volumeSlider.value);
-      if (video.volume === 0) {
-        video.muted = true;
-      } else {
-        video.muted = false;
-      }
-    });
-  }
-
-  var reduceMotionAnchors = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   var navHeight = 88;
   var anchorLinks = document.querySelectorAll('a[href^="#"]');
   Array.prototype.forEach.call(anchorLinks, function (link) {
     link.addEventListener("click", function (e) {
       var href = link.getAttribute("href");
       if (!href || href === "#") return;
-      var behavior = reduceMotionAnchors.matches ? "auto" : "smooth";
+      var behavior = reduceMotion.matches ? "auto" : "smooth";
       if (href === "#top") {
         e.preventDefault();
         window.scrollTo({ top: 0, behavior: behavior });
@@ -153,8 +140,6 @@
 
   if (!track || !prevBtn || !nextBtn) return;
 
-  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-
   function step() {
     if (track.children.length < 2) return track.clientWidth;
     var first = track.children[0];
@@ -163,10 +148,13 @@
     return stepPx > 0 ? stepPx : track.clientWidth;
   }
 
+  function setGalleryButtons(scrollLeft) {
+    prevBtn.disabled = scrollLeft <= 1;
+    nextBtn.disabled = scrollLeft >= track.scrollWidth - track.clientWidth - 1;
+  }
+
   function updateGalleryButtons() {
-    var maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
-    prevBtn.disabled = track.scrollLeft <= 1;
-    nextBtn.disabled = track.scrollLeft >= maxScroll - 1;
+    setGalleryButtons(track.scrollLeft);
   }
 
   function scrollByOne(direction) {
@@ -175,14 +163,12 @@
     var next = Math.round(target);
     var prev = Math.round(track.scrollLeft);
     if (next === prev) {
-      prevBtn.disabled = prev <= 1;
-      nextBtn.disabled = prev >= track.scrollWidth - track.clientWidth - 1;
+      setGalleryButtons(prev);
       return;
     }
     // Reflect the boundary state immediately so the control no longer appears
     // clickable after the interaction has already been committed.
-    prevBtn.disabled = next <= 1;
-    nextBtn.disabled = next >= track.scrollWidth - track.clientWidth - 1;
+    setGalleryButtons(next);
     track.scrollTo({ left: next, behavior: reduceMotion.matches ? "auto" : "smooth" });
   }
 
@@ -201,12 +187,11 @@
   /* --- Hero parallax --- */
   var heroBg = document.querySelector(".hero-bg");
   var hero = document.querySelector(".hero");
-  var reduceMotionParallax = window.matchMedia("(prefers-reduced-motion: reduce)");
   var parallaxTicking = false;
 
   function updateParallax() {
     parallaxTicking = false;
-    if (!heroBg || !hero || reduceMotionParallax.matches) return;
+    if (!heroBg || !hero || reduceMotion.matches) return;
     var scrollY = window.scrollY;
     var progress = Math.min(scrollY / hero.offsetHeight, 1);
     var offset = Math.round(progress * hero.offsetHeight * 0.2);
