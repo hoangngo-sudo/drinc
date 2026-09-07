@@ -11,8 +11,6 @@
   --error: #a52f10;
   --focus: #b83a16;
   --control-border: #716b63;
-  --font-display: "Source Serif 4", Georgia, serif;
-  --font-ui: "Inter", system-ui, -apple-system, sans-serif;
 }
 
 *,
@@ -72,9 +70,9 @@ summary {
   color: var(--ink);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
   font-family: var(--font-ui);
-  font-size: 15px;
-  font-weight: 500;
-  line-height: 150%;
+  font-size: var(--text-md);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-normal);
   text-decoration: none;
   transition: background-color 150ms ease, transform 150ms ease;
   will-change: transform;
@@ -107,7 +105,7 @@ summary {
   margin: 0;
   font-family: var(--font-display);
   font-size: 25px;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   line-height: 1.12;
   text-wrap: balance;
 }
@@ -115,8 +113,8 @@ summary {
 .form-intro p {
   margin: 16px 0 0;
   color: var(--ink-muted);
-  font-size: 13px;
-  line-height: 1.4;
+  font-size: var(--text-body);
+  line-height: var(--leading-normal);
   text-wrap: pretty;
 }
 
@@ -126,8 +124,8 @@ summary {
 
 .form-orientation h2 {
   margin: 0;
-  font-size: 15px;
-  font-weight: 600;
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
   line-height: 1.2;
   text-wrap: balance;
 }
@@ -146,9 +144,9 @@ summary {
   align-items: baseline;
   gap: 10px;
   color: var(--ink-muted);
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 1.4;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-snug);
   transition: color 150ms ease-out;
 }
 
@@ -191,8 +189,8 @@ summary {
   margin: 0 0 24px;
   width: 100%;
   padding: 0;
-  font-size: 15px;
-  font-weight: 600;
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
   line-height: 1.2;
 }
 
@@ -216,8 +214,8 @@ summary {
   margin: 22px 0 0;
   clear: both;
   color: var(--ink-muted);
-  font-size: 12px;
-  line-height: 1.4;
+  font-size: var(--text-sm);
+  line-height: 1.45;
 }
 
 .option-list {
@@ -238,8 +236,8 @@ summary {
   border-radius: 14px;
   background: var(--field);
   cursor: pointer;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
   line-height: 1.2;
   transition: background-color 150ms ease;
 }
@@ -252,9 +250,9 @@ summary {
   display: block;
   margin-top: 5px;
   color: var(--ink-muted);
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 1.4;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-snug);
 }
 
 .option-row input {
@@ -325,7 +323,7 @@ summary {
   inset-inline-start: 16px;
   z-index: 1;
   color: var(--ink-muted);
-  font-size: 13px;
+  font-size: var(--text-sm);
   line-height: 1;
   pointer-events: none;
   transform: translateY(-50%);
@@ -342,7 +340,7 @@ summary {
   outline: 0;
   background: var(--field);
   color: var(--ink);
-  font-size: 16px;
+  font-size: var(--text-body);
   line-height: 1.25;
   transition: background-color 150ms ease, border-color 150ms ease;
 }
@@ -354,8 +352,8 @@ summary {
 
 .contact-fields label:focus-within > span,
 .contact-fields label:has(input:not(:placeholder-shown)) > span {
-  top: 9px;
-  font-size: 10px;
+  top: 8px;
+  font-size: var(--text-xs);
   transform: none;
 }
 
@@ -374,16 +372,16 @@ summary {
   margin-bottom: 16px;
   padding: 4px 4px 0;
   color: var(--ink-muted);
-  font-size: 12px;
-  line-height: 1.5;
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
 }
 
 .turnstile-protected {
   margin-bottom: 16px;
   padding: 4px 4px 0;
   color: var(--ink-muted);
-  font-size: 12px;
-  line-height: 1.5;
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
 }
 
 .turnstile-card {
@@ -467,9 +465,9 @@ summary {
   color: #ffffff;
   cursor: pointer;
   font-family: var(--font-ui);
-  font-size: 15px;
-  font-weight: 500;
-  line-height: 150%;
+  font-size: var(--text-md);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-normal);
   transition: background-color 150ms ease, transform 150ms ease;
   will-change: transform;
 }
@@ -488,7 +486,7 @@ summary {
 
 .field-error {
   color: var(--error);
-  font-size: 12px;
+  font-size: var(--text-xs);
   line-height: 1.35;
 }
 
@@ -498,9 +496,9 @@ summary {
 
 .form-status {
   color: var(--brand-hover);
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 1.4;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-snug);
   text-align: center;
 }
 

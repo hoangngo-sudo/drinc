@@ -50,6 +50,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet" />
   <link rel="preload" as="image" href="assets/img/hero.webp" />
+  <link rel="stylesheet" href="css/tokens.css" />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
@@ -241,5 +242,28 @@
   </main>
 
   <script src="js/main.js" defer></script>
+
+  <!-- Dev-only: loads the DialKit tuner on localhost/file. Skipped on GitHub Pages. -->
+  <script>
+    (function () {
+      var host = location.hostname;
+      if (host !== "localhost" && host !== "127.0.0.1" && host !== "") return;
+      var link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = "vendor/dialkit/styles.css";
+      document.head.appendChild(link);
+      var lib = document.createElement("script");
+      lib.src = "vendor/dialkit/browser.global.js";
+      lib.onload = function () {
+        var tuner = document.createElement("script");
+        tuner.src = "js/tuner.js";
+        document.body.appendChild(tuner);
+      };
+      lib.onerror = function () {
+        console.warn("[dev] DialKit not found locally; tuner skipped.");
+      };
+      document.body.appendChild(lib);
+    })();
+  </script>
 </body>
 </html>

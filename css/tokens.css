@@ -1,0 +1,30 @@
+:root {
+  /* Families */
+  --font-display: "Source Serif 4", Georgia, serif;
+  --font-ui: "Inter", system-ui, -apple-system, sans-serif;
+
+  /* Weights */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+
+  /* Sizes */
+  --text-xs: 12px;      /* fine print, errors, metadata */
+  --text-sm: 13px;      /* form labels, help text */
+  --text-caption: 14px; /* captions, nav/CTA links */
+  --text-md: 15px;      /* supporting copy, controls, form questions */
+  --text-body: 16px;    /* body text, inputs */
+  --text-lead: 18px;    /* lead paragraphs, names */
+  --text-card: 24px;    /* card/panel titles */
+  --text-deck: clamp(20px, 2.5vw, 28px);    /* mission statement */
+  --text-quote: clamp(24px, 3vw, 30px);     /* testimonial quote */
+  --text-h2: clamp(32px, 3.5vw, 40px);      /* section headings */
+  --text-h1: clamp(44px, 5.5vw, 60px);      /* hero title */
+
+  /* Line heights */
+  --leading-tight: 1.1;     /* headings */
+  --leading-snug: 1.4;      /* labels, help, steps */
+  --leading-normal: 1.5;    /* form body, buttons */
+  --leading-body: 1.6;      /* base body */
+  --leading-relaxed: 1.625; /* landing body & lead copy */
+}

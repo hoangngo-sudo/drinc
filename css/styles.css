@@ -13,8 +13,6 @@
   --white-55: rgba(255, 255, 255, 0.55);
   --outline-img: rgba(0, 0, 0, 0.1);
   --outline-img-dark: rgba(255, 255, 255, 0.1);
-  --font-display: "Source Serif 4", Georgia, serif;
-  --font-ui: "Inter", system-ui, -apple-system, sans-serif;
   --radius-img: 16px;
   --focus: var(--brand-deep);
 }
@@ -35,8 +33,8 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-ui);
-  font-size: 16px;
-  line-height: 1.6;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
   font-synthesis: none;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -95,7 +93,7 @@ summary {
   padding: 10px 16px;
   background: var(--paper);
   color: var(--ink);
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(22, 19, 15, 0.15);
   transition: top 150ms ease;
@@ -108,8 +106,8 @@ summary {
 .h2 {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(32px, 3.5vw, 40px);
-  font-weight: 600;
+  font-size: var(--text-h2);
+  font-weight: var(--weight-semibold);
   line-height: 1.1;
   letter-spacing: -0.025em;
   text-wrap: balance;
@@ -156,9 +154,9 @@ main,
   background: var(--brand);
   color: #ffffff;
   font-family: var(--font-ui);
-  font-size: 15px;
-  font-weight: 500;
-  line-height: 1.5;
+  font-size: var(--text-md);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-normal);
   text-decoration: none;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
   transition: background-color 150ms ease, transform 150ms ease;
@@ -267,8 +265,8 @@ main,
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   color: #ffffff;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
   text-decoration: none;
   transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, transform 150ms ease;
 }
@@ -309,6 +307,7 @@ main,
   position: absolute;
   inset: 0;
   z-index: 0;
+  opacity: 0.2;
   background-image: linear-gradient(in oklab 0deg, oklab(0% 0 0 / 85%) 0%, oklab(0% 0 0 / 25%) 50%, oklab(0% 0 0 / 45%) 100%);
   background-position: 0 0;
   background-size: 100% 100%;
@@ -349,8 +348,8 @@ main,
 .hero__title {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(36px, 5.5vw, 60px);
-  font-weight: 600;
+  font-size: var(--text-h1);
+  font-weight: var(--weight-semibold);
   line-height: 1.05;
   letter-spacing: -0.025em;
   color: #ffffff;
@@ -360,8 +359,8 @@ main,
 .hero__sub {
   margin: 0;
   max-width: 576px;
-  font-size: 18px;
-  line-height: 1.625;
+  font-size: var(--text-lead);
+  line-height: var(--leading-relaxed);
   color: var(--white-90);
 }
 
@@ -376,8 +375,8 @@ main,
   margin: 0 auto;
   max-width: 576px;
   font-family: var(--font-display);
-  font-size: clamp(20px, 2.5vw, 28px);
-  line-height: 1.5;
+  font-size: var(--text-deck);
+  line-height: var(--leading-normal);
   text-align: center;
   text-wrap: pretty;
 }
@@ -408,16 +407,16 @@ main,
 .program__title {
   margin: 20px 0 0;
   font-family: var(--font-display);
-  font-size: 24px;
-  font-weight: 600;
+  font-size: var(--text-card);
+  font-weight: var(--weight-semibold);
   letter-spacing: -0.025em;
   line-height: 1.333;
 }
 
 .program__desc {
   margin: 8px 0 0;
-  font-size: 15px;
-  line-height: 1.625;
+  font-size: var(--text-md);
+  line-height: var(--leading-relaxed);
   color: var(--ink-muted);
 }
 
@@ -453,7 +452,7 @@ main,
   bottom: 0;
   height: 45%;
   border-radius: 0 0 24px 24px;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.65), transparent);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.2), transparent);
   pointer-events: none;
 }
 
@@ -516,8 +515,8 @@ main,
 .video-bar__time {
   flex: 0 0 auto;
   color: rgba(255, 255, 255, 0.85);
-  font-size: 12px;
-  font-weight: 500;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
   line-height: 1;
   letter-spacing: 0.02em;
   font-variant-numeric: tabular-nums;
@@ -596,7 +595,7 @@ main,
 .testimonial__quote {
   margin: 24px 0 0;
   font-family: var(--font-display);
-  font-size: clamp(24px, 3vw, 30px);
+  font-size: var(--text-quote);
   line-height: 1.375;
   text-wrap: pretty;
 }
@@ -608,8 +607,8 @@ main,
 .testimonial__name {
   display: block;
   font-family: var(--font-display);
-  font-size: 18px;
-  font-weight: 600;
+  font-size: var(--text-lead);
+  font-weight: var(--weight-semibold);
   letter-spacing: -0.025em;
 }
 
@@ -691,15 +690,15 @@ main,
 .officer__name {
   margin: 20px 0 0;
   font-family: var(--font-display);
-  font-size: 18px;
-  font-weight: 600;
+  font-size: var(--text-lead);
+  font-weight: var(--weight-semibold);
   letter-spacing: -0.025em;
   text-align: center;
 }
 
 .officer__role {
   margin: 4px 0 0;
-  font-size: 15px;
+  font-size: var(--text-md);
   color: var(--ink-muted);
   text-align: center;
 }
@@ -742,8 +741,8 @@ main,
   padding: 32px 12px 12px;
   background: linear-gradient(to top, rgba(0, 0, 0, 0.65), transparent);
   color: #ffffff;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
 }
 
 .gallery__header {
@@ -777,15 +776,13 @@ main,
 
 .banner__title {
   color: #ffffff;
-  font-weight: 500;
-  line-height: 1.375;
 }
 
 .banner__body {
   margin: 24px auto 0;
   max-width: 640px;
-  font-size: 18px;
-  line-height: 1.625;
+  font-size: var(--text-lead);
+  line-height: var(--leading-relaxed);
   color: var(--white-90);
 }
 
@@ -823,8 +820,8 @@ main,
   padding: 8px 14px;
   border-radius: 999px;
   color: var(--white-70);
-  font-size: 14px;
-  font-weight: 500;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
   text-decoration: none;
   touch-action: manipulation;
   transition: color 150ms ease, background-color 150ms ease, transform 150ms ease;
