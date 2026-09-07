@@ -1,3 +1,8 @@
 .github/skills
 plans
 docs
+node_modules
+vendor/dialkit/
+js/tuner.js
+.vscode/
+scripts
