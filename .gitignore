@@ -2,7 +2,7 @@
 plans
 docs
 node_modules
-vendor/dialkit/
+vendor/*
 js/tuner.js
 .vscode/
 scripts
