@@ -15,6 +15,8 @@
   --outline-img-dark: rgba(255, 255, 255, 0.1);
   --radius-img: 16px;
   --focus: var(--brand-deep);
+  --wordmark-brightness: 0.3;
+  --wordmark-alpha: 70;
 }
 
 *,
@@ -800,7 +802,6 @@ main,
 }
 
 .cta__inner {
-  max-width: 1024px;
   flex: 1 0 auto;
 }
 
@@ -868,19 +869,142 @@ main,
 
 .cta__wordmark {
   margin-top: auto;
-  width: 100%;
-  padding-top: 48px;
-  overflow: hidden;
-  color: #ffffff;
+  padding-top: 106px;
   line-height: 0;
-  -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
 }
 
 .cta__wordmark-svg {
   display: block;
   width: 100%;
   height: auto;
+  color: #ffffff;
+  opacity: var(--wordmark-brightness);
+  -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
+}
+
+.cta__wordmark-svg [fill]:not([fill="none"]) {
+  fill: color-mix(in oklab, currentColor calc(var(--wordmark-alpha) * 1%), transparent);
+}
+
+.cta__wordmark-svg [stroke]:not([stroke="none"]) {
+  stroke: color-mix(in oklab, currentColor 78%, transparent);
+}
+
+.float-cta {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 24px;
+  z-index: 40;
+  display: flex;
+  justify-content: center;
+  transition: none;
+  pointer-events: none;
+}
+
+.float-cta__reveal {
+  display: flex;
+  justify-content: center;
+}
+
+.float-cta__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 8px 8px 24px;
+  border: 1px solid rgba(255, 255, 255, 0.278);
+  border-radius: 999px;
+  background: rgba(22, 19, 15, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #ffffff;
+  font-family: var(--font-ui);
+  font-size: var(--text-md);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-normal);
+  text-decoration: none;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.18), 0 4px 6px -4px rgba(0, 0, 0, 0.18);
+  pointer-events: auto;
+  transition: background-color 150ms ease, transform 150ms ease;
+}
+
+.float-cta__label {
+  white-space: nowrap;
+}
+
+.float-cta__dot {
+  display: grid;
+  place-items: center;
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: var(--brand);
+  color: #ffffff;
+  transition: background-color 150ms ease;
+}
+
+.float-cta__arrow {
+  display: block;
+  width: 12px;
+  height: 12px;
+}
+
+.float-cta__pill:active {
+  transform: scale(0.96);
+}
+
+.float-cta__pill:focus-visible {
+  outline-color: #e8704a;
+}
+
+@media (hover: hover) {
+  .float-cta__pill:hover {
+    background: rgba(22, 19, 15, 0.8);
+  }
+
+  .float-cta__pill:hover .float-cta__dot {
+    background: var(--brand-deep);
+  }
+}
+
+.float-cta__reveal {
+  visibility: hidden;
+  perspective: 500px;
+  perspective-origin: 50% calc(100% + var(--float-bottom, 24px));
+}
+
+.float-cta.is-visible .float-cta__reveal {
+  visibility: visible;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .float-cta__reveal {
+    transition: visibility 0s linear 220ms;
+  }
+
+  .float-cta__pill {
+    translate: 0 0 -440px;
+    opacity: 0;
+    transition: background-color 150ms ease,
+                transform 150ms ease,
+                translate 200ms cubic-bezier(0.4, 0, 1, 0.55),
+                opacity 180ms ease;
+  }
+
+  .float-cta.is-visible .float-cta__reveal {
+    transition: visibility 0s linear 0s;
+  }
+
+  .float-cta.is-visible .float-cta__pill {
+    translate: 0 0 0;
+    opacity: 1;
+    transition: background-color 150ms ease,
+                transform 150ms ease,
+                translate 280ms linear(0, 0.0841, 0.2772, 0.5063, 0.7216, 0.8952, 1.0165, 1.0875, 1.1168, 1.1165, 1.0982, 1.0719, 1.0448, 1.0214, 1.004, 0.9928, 0.9871, 0.9857, 0.9871, 0.9899, 0.9932, 0.9962, 0.9987, 1.0003, 1.0013, 1),
+                opacity 160ms ease-out;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

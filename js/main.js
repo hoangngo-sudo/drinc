@@ -188,7 +188,6 @@
   var heroBg = document.querySelector(".hero-bg");
   var hero = document.querySelector(".hero");
   var parallaxTicking = false;
-
   function updateParallax() {
     parallaxTicking = false;
     if (!heroBg || !hero || reduceMotion.matches) return;
@@ -208,5 +207,64 @@
   if (heroBg) {
     window.addEventListener("scroll", onParallaxScroll, { passive: true });
     updateParallax();
+  }
+
+  /* --- Floating CTA --- */
+  var floatCta = document.querySelector("[data-float-cta]");
+  var heroCta = document.querySelector("[data-hero-cta]");
+  var floatParkAt = document.querySelector(".cta__wordmark");
+  var floatClearOf = document.querySelector(".cta__links");
+  var floatPill = document.querySelector(".float-cta__pill");
+
+  if (floatCta) {
+    if (!heroCta) {
+      floatCta.classList.add("is-visible");
+    } else {
+      var FLOAT_GAP = 24;
+      var PARK_GAP = 24;
+      var floatTicking = false;
+      var floatBottom = null;
+      var pillHeight = floatPill ? floatPill.offsetHeight : 0;
+
+      var updateFloatCta = function () {
+        floatTicking = false;
+        floatCta.classList.toggle("is-visible", heroCta.getBoundingClientRect().bottom <= 0);
+
+        var next = FLOAT_GAP;
+
+        if (floatParkAt) {
+          var pillBottom = floatParkAt.getBoundingClientRect().top;
+
+          if (floatClearOf && pillHeight) {
+            var clear = floatClearOf.getBoundingClientRect().bottom + PARK_GAP + pillHeight;
+            if (clear > pillBottom) pillBottom = clear;
+          }
+
+          next = Math.max(FLOAT_GAP, window.innerHeight - pillBottom);
+        }
+
+        if (next !== floatBottom) {
+          floatBottom = next;
+          floatCta.style.bottom = next + "px";
+          floatCta.style.setProperty("--float-bottom", next + "px");
+        }
+      };
+
+      var onFloatScroll = function () {
+        if (!floatTicking) {
+          floatTicking = true;
+          requestAnimationFrame(updateFloatCta);
+        }
+      };
+
+      var onFloatResize = function () {
+        pillHeight = floatPill ? floatPill.offsetHeight : 0;
+        onFloatScroll();
+      };
+
+      window.addEventListener("scroll", onFloatScroll, { passive: true });
+      window.addEventListener("resize", onFloatResize, { passive: true });
+      updateFloatCta();
+    }
   }
 })();
