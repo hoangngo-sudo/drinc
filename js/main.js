@@ -222,8 +222,10 @@
     } else {
       var FLOAT_GAP = 24;
       var PARK_GAP = 24;
+      var RISE_EXTRA = 34;
       var floatTicking = false;
       var floatBottom = null;
+      var floatRise = null;
       var pillHeight = floatPill ? floatPill.offsetHeight : 0;
 
       var updateFloatCta = function () {
@@ -246,7 +248,11 @@
         if (next !== floatBottom) {
           floatBottom = next;
           floatCta.style.bottom = next + "px";
-          floatCta.style.setProperty("--float-bottom", next + "px");
+        }
+
+        if (pillHeight && floatRise !== next) {
+          floatRise = next;
+          floatCta.style.setProperty("--float-rise", next + RISE_EXTRA + "px");
         }
       };
 

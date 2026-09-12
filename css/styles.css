@@ -212,7 +212,7 @@ main,
   }
 }
 
-.icon-btn:active {
+.icon-btn:not(:disabled):active {
   transform: scale(0.96);
 }
 
@@ -972,7 +972,7 @@ main,
 .float-cta__reveal {
   visibility: hidden;
   perspective: 500px;
-  perspective-origin: 50% calc(100% + var(--float-bottom, 24px));
+  perspective-origin: 50% calc(100% + var(--float-rise, 58px));
 }
 
 .float-cta.is-visible .float-cta__reveal {
@@ -985,7 +985,7 @@ main,
   }
 
   .float-cta__pill {
-    translate: 0 0 -440px;
+    translate: 0 var(--float-rise, 58px) -440px;
     opacity: 0;
     transition: background-color 150ms ease,
                 transform 150ms ease,
@@ -1003,7 +1003,7 @@ main,
     transition: background-color 150ms ease,
                 transform 150ms ease,
                 translate 280ms linear(0, 0.0841, 0.2772, 0.5063, 0.7216, 0.8952, 1.0165, 1.0875, 1.1168, 1.1165, 1.0982, 1.0719, 1.0448, 1.0214, 1.004, 0.9928, 0.9871, 0.9857, 0.9871, 0.9899, 0.9932, 0.9962, 0.9987, 1.0003, 1.0013, 1),
-                opacity 160ms ease-out;
+                opacity 280ms linear(0, 0.0963, 0.279, 0.4621, 0.6152, 0.7326, 0.8181, 0.8782, 0.9195, 0.9473, 0.9658, 0.978, 0.9859, 0.991, 0.9943, 0.9964, 0.9978, 0.9986, 0.9991, 0.9995, 0.9997, 0.9998, 0.9999, 0.9999, 1, 1);
   }
 }
 
