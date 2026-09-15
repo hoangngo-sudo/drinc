@@ -788,6 +788,19 @@ main,
   color: var(--white-90);
 }
 
+/* Fix oversized mission and banner copy on small screens. */
+@media (max-width: 767px) {
+  .mission__statement {
+    font-size: 18px;
+    line-height: var(--leading-normal);
+  }
+
+  .banner__body {
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+  }
+}
+
 .section--dark {
   background: var(--ink);
 }
@@ -1005,6 +1018,30 @@ main,
                 translate 280ms linear(0, 0.0841, 0.2772, 0.5063, 0.7216, 0.8952, 1.0165, 1.0875, 1.1168, 1.1165, 1.0982, 1.0719, 1.0448, 1.0214, 1.004, 0.9928, 0.9871, 0.9857, 0.9871, 0.9899, 0.9932, 0.9962, 0.9987, 1.0003, 1.0013, 1),
                 opacity 280ms linear(0, 0.0963, 0.279, 0.4621, 0.6152, 0.7326, 0.8181, 0.8782, 0.9195, 0.9473, 0.9658, 0.978, 0.9859, 0.991, 0.9943, 0.9964, 0.9978, 0.9986, 0.9991, 0.9995, 0.9997, 0.9998, 0.9999, 0.9999, 1, 1);
   }
+
+    @media (max-width: 767px) {
+      .float-cta__reveal {
+        transition: visibility 0s linear 320ms;
+      }
+
+      .float-cta__pill {
+        transition: background-color 150ms ease,
+                    transform 150ms ease,
+                    translate 320ms cubic-bezier(0.4, 0, 1, 0.55),
+                    opacity 300ms ease;
+      }
+
+      .float-cta.is-visible .float-cta__reveal {
+        transition: visibility 0s linear 0s;
+      }
+
+      .float-cta.is-visible .float-cta__pill {
+        transition: background-color 150ms ease,
+                    transform 150ms ease,
+                    translate 460ms linear(0, 0.0841, 0.2772, 0.5063, 0.7216, 0.8952, 1.0165, 1.0875, 1.1168, 1.1165, 1.0982, 1.0719, 1.0448, 1.0214, 1.004, 0.9928, 0.9871, 0.9857, 0.9871, 0.9899, 0.9932, 0.9962, 0.9987, 1.0003, 1.0013, 1),
+                    opacity 460ms linear(0, 0.0963, 0.279, 0.4621, 0.6152, 0.7326, 0.8181, 0.8782, 0.9195, 0.9473, 0.9658, 0.978, 0.9859, 0.991, 0.9943, 0.9964, 0.9978, 0.9986, 0.9991, 0.9995, 0.9997, 0.9998, 0.9999, 0.9999, 1, 1);
+      }
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
