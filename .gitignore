@@ -3,6 +3,8 @@ plans
 docs
 node_modules
 vendor/*
+
+!vendor/paper-shaders
 js/tuner.js
 .vscode/
 scripts
