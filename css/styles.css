@@ -15,7 +15,7 @@
   --outline-img-dark: rgba(255, 255, 255, 0.1);
   --radius-img: 16px;
   --focus: var(--brand-deep);
-  --wordmark-brightness: 0.3;
+  --wordmark-brightness: 1;
   --wordmark-alpha: 70;
 }
 
@@ -891,7 +891,7 @@ main,
   width: 100%;
   height: auto;
   color: #ffffff;
-  opacity: var(--wordmark-brightness);
+  opacity: 0.3;
   -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
   mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
 }
@@ -902,6 +902,23 @@ main,
 
 .cta__wordmark-svg [stroke]:not([stroke="none"]) {
   stroke: color-mix(in oklab, currentColor 78%, transparent);
+}
+
+.cta__wordmark-shader {
+  display: none;
+  width: 100%;
+  aspect-ratio: 137.211 / 40.5;
+  opacity: var(--wordmark-brightness);
+  -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
+}
+
+.cta__wordmark.is-shader .cta__wordmark-svg {
+  display: none;
+}
+
+.cta__wordmark.is-shader .cta__wordmark-shader {
+  display: block;
 }
 
 .float-cta {
