@@ -23,22 +23,52 @@ let mount = null;
 
 /* The shader only animates over the part of the wordmark that survives the
    mask fade, so there is no reason to pay for it before the footer is close. */
-function whenApproachingViewport(callback) {
+let started = false;
+let approachObserver = null;
+
+/* Runs whichever trigger fires first, and only that one. */
+function startOnce(callback) {
+  if (started) return;
+  started = true;
+  approachObserver?.disconnect();
+  callback();
+}
+
+/* Trigger one: the footer coming into range. This is the path for anyone who gets
+   there before the warm-up below — a jump link, a restored scroll position, or a
+   reload part way down the page. */
+function onApproach(callback) {
   if (!("IntersectionObserver" in window)) {
-    callback();
+    startOnce(callback);
     return;
   }
 
-  const observer = new IntersectionObserver(
+  approachObserver = new IntersectionObserver(
     (entries) => {
-      if (!entries.some((entry) => entry.isIntersecting)) return;
-      observer.disconnect();
-      callback();
+      if (entries.some((entry) => entry.isIntersecting)) startOnce(callback);
     },
     { rootMargin: "400px 0px" },
   );
 
-  observer.observe(figure);
+  approachObserver.observe(figure);
+}
+
+/* Trigger two: once the page has loaded and the browser is idle. Fetching the
+   texture, solving it, and uploading it to WebGL is a few hundred milliseconds of
+   main-thread work, so doing it here means the metal is already drawn by the time
+   the footer is reached instead of arriving a beat late. Deferring to idle keeps
+   it off the critical path: the first paint, the hero, and the fonts go first. */
+function onIdleAfterLoad(callback) {
+  const warmUp = () => {
+    if ("requestIdleCallback" in window) {
+      requestIdleCallback(() => startOnce(callback), { timeout: 2000 });
+    } else {
+      startOnce(callback);
+    }
+  };
+
+  if (document.readyState === "complete") warmUp();
+  else window.addEventListener("load", warmUp, { once: true });
 }
 
 /* Deliberately does not open a probe context: creating one and immediately
@@ -116,10 +146,13 @@ async function renderWordmark() {
 }
 
 if (figure && container && supportsWebGL2()) {
-  whenApproachingViewport(() => {
+  const start = () => {
     renderWordmark();
     reducedMotion.addEventListener("change", (event) => {
       mount?.setSpeed(event.matches ? 0 : 1);
     });
-  });
+  };
+
+  onApproach(start);
+  onIdleAfterLoad(start);
 }
