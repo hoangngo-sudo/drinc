@@ -11,6 +11,8 @@ import {
 } from "../vendor/paper-shaders/shaders/liquid-metal.js";
 
 const TEXTURE_URL = new URL("../assets/img/wordmark-metal.webp", import.meta.url).href;
+const MIN_PIXEL_RATIO = 6;
+const MAX_PIXEL_COUNT = 1920 * 1080;
 
 const figure = document.querySelector(".cta__wordmark");
 const container = figure ? figure.querySelector("[data-wordmark-shader]") : null;
@@ -39,12 +41,11 @@ function whenApproachingViewport(callback) {
   observer.observe(figure);
 }
 
+/* Deliberately does not open a probe context: creating one and immediately
+   losing it is a known way to upset constrained mobile GPUs, and ShaderMount
+   throws when it cannot get a real context, which the caller already handles. */
 function supportsWebGL2() {
-  const probe = document.createElement("canvas");
-  const gl = probe.getContext("webgl2");
-  if (!gl) return false;
-  gl.getExtension("WEBGL_lose_context")?.loseContext();
-  return true;
+  return typeof WebGL2RenderingContext !== "undefined";
 }
 
 function loadImage(src) {
@@ -99,12 +100,12 @@ async function renderWordmark() {
       container,
       liquidMetalFragmentShader,
       createUniforms(image),
-      undefined,
-      reducedMotion.matches ? 0 : 1,
-      0,
-      2,
-      undefined,
-      ["u_image"],
+      undefined, // WebGL context attributes
+      reducedMotion.matches ? 0 : 1, // speed; 0 stops the render loop entirely
+      0, // frame
+      MIN_PIXEL_RATIO,
+      MAX_PIXEL_COUNT,
+      ["u_image"], // uniforms that need mipmaps
     );
   } catch (error) {
     figure.classList.remove("is-shader");

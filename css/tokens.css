@@ -9,12 +9,11 @@
   --weight-semibold: 600;
 
   /* Sizes */
-  --text-xs: 12px;      /* fine print, errors, metadata */
-  --text-sm: 13px;      /* form labels, help text */
-  --text-caption: 14px; /* captions, nav/CTA links */
-  --text-md: 15px;      /* supporting copy, controls, form questions */
-  --text-body: 16px;    /* body text, inputs */
-  --text-lead: 18px;    /* lead paragraphs, names */
+  --text-xs: 12px;      /* fine print: sub-labels, legal, metadata */
+  --text-caption: 14px; /* secondary UI: help, errors, dense rows, nav */
+  --text-body: 16px;    /* reading text, inputs, controls, legends */
+
+  /* Display steps — headings only, never body copy */
   --text-card: 24px;    /* card/panel titles */
   --text-deck: clamp(20px, 2.5vw, 28px);    /* mission statement */
   --text-quote: clamp(24px, 3vw, 30px);     /* testimonial quote */

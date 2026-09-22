@@ -149,8 +149,20 @@
   }
 
   function setGalleryButtons(scrollLeft) {
+    // Read this first: assigning `disabled` moves focus to <body> straight away,
+    // so by the time the flags are set the focused button is already forgotten.
+    var focused = document.activeElement;
+
     prevBtn.disabled = scrollLeft <= 1;
     nextBtn.disabled = scrollLeft >= track.scrollWidth - track.clientWidth - 1;
+
+    // Disabling the focused button would strand a keyboard user back at the top
+    // of the page. Hand focus to the control that can still be pressed.
+    if (focused === nextBtn && nextBtn.disabled && !prevBtn.disabled) {
+      prevBtn.focus();
+    } else if (focused === prevBtn && prevBtn.disabled && !nextBtn.disabled) {
+      nextBtn.focus();
+    }
   }
 
   function updateGalleryButtons() {

@@ -26,6 +26,7 @@
 }
 
 html {
+  color-scheme: light;
   scroll-behavior: smooth;
   scroll-padding-top: 88px;
 }
@@ -66,6 +67,14 @@ textarea,
 label,
 summary {
   -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a,
+input,
+select,
+[role="button"] {
+  touch-action: manipulation;
 }
 
 :focus-visible {
@@ -156,7 +165,7 @@ main,
   background: var(--brand);
   color: #ffffff;
   font-family: var(--font-ui);
-  font-size: var(--text-md);
+  font-size: var(--text-body);
   font-weight: var(--weight-medium);
   line-height: var(--leading-normal);
   text-decoration: none;
@@ -361,7 +370,7 @@ main,
 .hero__sub {
   margin: 0;
   max-width: 576px;
-  font-size: var(--text-lead);
+  font-size: var(--text-body);
   line-height: var(--leading-relaxed);
   color: var(--white-90);
 }
@@ -417,7 +426,7 @@ main,
 
 .program__desc {
   margin: 8px 0 0;
-  font-size: var(--text-md);
+  font-size: var(--text-body);
   line-height: var(--leading-relaxed);
   color: var(--ink-muted);
 }
@@ -585,6 +594,8 @@ main,
 .testimonial__video {
   width: 100%;
   max-width: 300px;
+
+  aspect-ratio: 1080 / 1920;
   border-radius: 24px;
   display: block;
   box-shadow: 0 0 0 1px var(--outline-img), 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
@@ -609,7 +620,7 @@ main,
 .testimonial__name {
   display: block;
   font-family: var(--font-display);
-  font-size: var(--text-lead);
+  font-size: var(--text-body);
   font-weight: var(--weight-semibold);
   letter-spacing: -0.025em;
 }
@@ -692,7 +703,7 @@ main,
 .officer__name {
   margin: 20px 0 0;
   font-family: var(--font-display);
-  font-size: var(--text-lead);
+  font-size: var(--text-body);
   font-weight: var(--weight-semibold);
   letter-spacing: -0.025em;
   text-align: center;
@@ -700,7 +711,7 @@ main,
 
 .officer__role {
   margin: 4px 0 0;
-  font-size: var(--text-md);
+  font-size: var(--text-caption);
   color: var(--ink-muted);
   text-align: center;
 }
@@ -783,21 +794,16 @@ main,
 .banner__body {
   margin: 24px auto 0;
   max-width: 640px;
-  font-size: var(--text-lead);
+  font-size: var(--text-body);
   line-height: var(--leading-relaxed);
   color: var(--white-90);
 }
 
-/* Fix oversized mission and banner copy on small screens. */
+/* Fix oversized mission copy on small screens. */
 @media (max-width: 767px) {
   .mission__statement {
     font-size: 18px;
     line-height: var(--leading-normal);
-  }
-
-  .banner__body {
-    font-size: var(--text-body);
-    line-height: var(--leading-body);
   }
 }
 
@@ -950,7 +956,7 @@ main,
   -webkit-backdrop-filter: blur(12px);
   color: #ffffff;
   font-family: var(--font-ui);
-  font-size: var(--text-md);
+  font-size: var(--text-body);
   font-weight: var(--weight-medium);
   line-height: var(--leading-normal);
   text-decoration: none;
