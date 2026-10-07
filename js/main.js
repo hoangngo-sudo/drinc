@@ -225,46 +225,51 @@
   var floatCta = document.querySelector("[data-float-cta]");
   var heroCta = document.querySelector("[data-hero-cta]");
   var floatParkAt = document.querySelector(".cta__wordmark");
-  var floatClearOf = document.querySelector(".cta__links");
   var floatPill = document.querySelector(".float-cta__pill");
 
   if (floatCta) {
     if (!heroCta) {
       floatCta.classList.add("is-visible");
     } else {
-      var FLOAT_GAP = 24;
-      var PARK_GAP = 24;
-      var RISE_EXTRA = 34;
       var floatTicking = false;
-      var floatBottom = null;
-      var floatRise = null;
-      var pillHeight = floatPill ? floatPill.offsetHeight : 0;
+      var floatGap = 24;
+      var parkOffset = 0;
+      var pillHeight = 0;
 
+      var measureFloatCta = function () {
+        var styles = getComputedStyle(floatCta);
+        floatGap = parseFloat(styles.getPropertyValue("--float-gap")) || 24;
+        parkOffset = parseFloat(styles.getPropertyValue("--float-park-offset")) || 0;
+        pillHeight = floatPill ? floatPill.offsetHeight : 0;
+      };
+
+      /* Scrolling only ever flips two boolean states. The pill is never given a
+         new position on a scroll frame: while it floats, CSS pins it to the
+         viewport; once the wordmark rises to meet it, the pill is switched into
+         the page at the same on-screen spot, so it then scrolls with the footer
+         and the hand-over is invisible. */
       var updateFloatCta = function () {
         floatTicking = false;
-        floatCta.classList.toggle("is-visible", heroCta.getBoundingClientRect().bottom <= 0);
 
-        var next = FLOAT_GAP;
+        var pastHero = heroCta.getBoundingClientRect().bottom <= 0;
+        floatCta.classList.toggle("is-visible", pastHero);
 
-        if (floatParkAt) {
-          var pillBottom = floatParkAt.getBoundingClientRect().top;
-
-          if (floatClearOf && pillHeight) {
-            var clear = floatClearOf.getBoundingClientRect().bottom + PARK_GAP + pillHeight;
-            if (clear > pillBottom) pillBottom = clear;
-          }
-
-          next = Math.max(FLOAT_GAP, window.innerHeight - pillBottom);
+        if (!pastHero || !floatParkAt || !pillHeight) {
+          floatCta.classList.remove("is-parked");
+          return;
         }
 
-        if (next !== floatBottom) {
-          floatBottom = next;
-          floatCta.style.bottom = next + "px";
-        }
+        var regionTop = floatParkAt.getBoundingClientRect().top;
+        var floatTop = window.innerHeight - floatGap - pillHeight;
 
-        if (pillHeight && floatRise !== next) {
-          floatRise = next;
-          floatCta.style.setProperty("--float-rise", next + RISE_EXTRA + "px");
+        if (regionTop + parkOffset <= floatTop) {
+          floatCta.style.setProperty(
+            "--float-park-top",
+            regionTop + window.scrollY + parkOffset + "px",
+          );
+          floatCta.classList.add("is-parked");
+        } else {
+          floatCta.classList.remove("is-parked");
         }
       };
 
@@ -276,10 +281,11 @@
       };
 
       var onFloatResize = function () {
-        pillHeight = floatPill ? floatPill.offsetHeight : 0;
+        measureFloatCta();
         onFloatScroll();
       };
 
+      measureFloatCta();
       window.addEventListener("scroll", onFloatScroll, { passive: true });
       window.addEventListener("resize", onFloatResize, { passive: true });
       updateFloatCta();

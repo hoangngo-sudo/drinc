@@ -87,7 +87,8 @@ function loadImage(src) {
   });
 }
 
-/* Uniforms and sizing mirror the LiquidMetal layer from design file. */
+/* Uniforms and sizing mirror the LiquidMetal layer from design file:
+   Default preset values with shape "none" and scale 1. */
 function createUniforms(image) {
   return {
     u_colorBack: getShaderColorFromString("#00000000"),
@@ -96,13 +97,13 @@ function createUniforms(image) {
     u_image: image,
     u_isImage: true,
 
-    u_repetition: 1.5,
-    u_softness: 0.05,
-    u_shiftRed: 0,
-    u_shiftBlue: 0,
-    u_distortion: 0.2,
+    u_repetition: 2,
+    u_softness: 0.1,
+    u_shiftRed: 0.3,
+    u_shiftBlue: 0.3,
+    u_distortion: 0.07,
     u_contour: 0.4,
-    u_angle: -260,
+    u_angle: 70,
     u_shape: LiquidMetalShapes.none,
 
     u_fit: ShaderFitOptions.contain,
