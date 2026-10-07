@@ -48,10 +48,25 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="preload" as="image" href="assets/img/hero.webp" />
   <link rel="stylesheet" href="css/tokens.css" />
   <link rel="stylesheet" href="css/styles.css" />
+
+  <!-- Dev-only: loads the Lapse animation inspector on localhost/file. -->
+  <!-- <script>
+    (function () {
+      var host = location.hostname;
+      if (host !== "localhost" && host !== "127.0.0.1" && host !== "") return;
+      var panel = document.createElement("script");
+      panel.src = "vendor/lapse/panel.global.js";
+      panel.async = false;
+      panel.onload = function () {
+        lapse.mountLapse();
+      };
+      document.head.appendChild(panel);
+    })();
+  </script> -->
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -66,7 +81,7 @@
   </header>
 
   <main id="main">
-    <section class="hero" aria-labelledby="hero-title">
+    <section class="hero" data-nav-tone="dark" aria-labelledby="hero-title">
       <div class="hero-bg"></div>
       <div class="hero-overlay"></div>
       <div class="container hero__inner">
@@ -120,7 +135,9 @@
         <div class="testimonial">
           <div class="testimonial__media">
             <div class="testimonial__frame">
-              <video class="testimonial__video" src="assets/video.mp4" poster="assets/img/testimonial-video-frame.webp" preload="metadata" loop playsinline muted aria-label="Student testimonial video" data-video></video>
+              <div class="testimonial__clip">
+                <video class="testimonial__video" src="assets/video.mp4" poster="assets/img/testimonial-video-frame.webp" preload="metadata" loop playsinline muted aria-label="Student testimonial video" data-video></video>
+              </div>
               <div class="video-bar" data-video-bar>
                 <div class="video-bar__controls">
                   <div class="video-bar__spacer"></div>
@@ -139,11 +156,8 @@
             </div>
           </div>
           <div class="testimonial__body">
-            <h2 id="testimony-title" class="h2">Hear It From A Student</h2>
+            <h2 id="testimony-title" class="h2">Why Study the Bible?</h2>
             <blockquote class="testimonial__quote">“When I came to Bible study and met Jesus, I learned what the truth is. I learned to live a life of purpose.”</blockquote>
-            <p class="testimonial__attribution">
-              <span class="testimonial__name">Jorge Lau</span>
-            </p>
           </div>
         </div>
       </div>
@@ -210,10 +224,14 @@
       </div>
     </section>
 
-    <section class="banner" aria-labelledby="banner-title">
+    <section class="banner" data-nav-tone="dark" aria-label="Scripture">
       <div class="container banner__inner">
-        <h2 id="banner-title" class="h2 banner__title">“Who Is Jesus?”</h2>
-        <p class="banner__body">Who is Jesus, and what does the Bible say about him? Whether you follow Jesus or are simply curious, Deeper Roots in Christ is a place to ask questions, study the Bible, and grow in faith. All UIC students are welcome!</p>
+        <figure class="banner__figure">
+          <blockquote class="banner__quote">
+            <p>&ldquo;The time is fulfilled, and the kingdom of God is at hand; repent and believe in the gospel.&rdquo;</p>
+          </blockquote>
+          <figcaption class="banner__cite">Mark 1:15 ESV</figcaption>
+        </figure>
       </div>
     </section>
 
@@ -257,6 +275,7 @@
   </div>
 
   <script src="js/main.js" defer></script>
+  <script src="js/nav-contrast.js" defer></script>
   <script type="module" src="js/footer-shader.js"></script>
 </body>
 </html>

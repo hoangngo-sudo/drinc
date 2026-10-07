@@ -13,6 +13,8 @@
   --white-55: rgba(255, 255, 255, 0.55);
   --outline-img: rgba(0, 0, 0, 0.1);
   --outline-img-dark: rgba(255, 255, 255, 0.1);
+  --cta-ring-dark: rgba(255, 255, 255, 0.28);
+  --cta-ring-light: rgba(0, 0, 0, 0.12);
   --radius-img: 16px;
   --focus: var(--brand-deep);
   --wordmark-brightness: 1;
@@ -82,11 +84,18 @@ select,
   outline-offset: 2px;
 }
 
-.site-nav :focus-visible,
 .hero :focus-visible,
 .section--dark :focus-visible,
 .banner :focus-visible {
   outline-color: #e8704a;
+}
+
+.site-nav :focus-visible {
+  outline-color: #e8704a;
+}
+
+.site-nav.is-over-light :focus-visible {
+  outline-color: var(--brand-deep);
 }
 
 .container {
@@ -118,7 +127,7 @@ select,
   margin: 0;
   font-family: var(--font-display);
   font-size: var(--text-h2);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-regular);
   line-height: 1.1;
   letter-spacing: -0.025em;
   text-wrap: balance;
@@ -130,6 +139,7 @@ select,
 
 .h2--light {
   color: #ffffff;
+  font-style: italic;
   line-height: 1.1;
 }
 
@@ -165,7 +175,7 @@ main,
   background: var(--brand);
   color: #ffffff;
   font-family: var(--font-ui);
-  font-size: var(--text-body);
+  font-size: var(--text-small);
   font-weight: var(--weight-medium);
   line-height: var(--leading-normal);
   text-decoration: none;
@@ -237,11 +247,10 @@ main,
   right: 0;
   z-index: 50;
   background: transparent;
-  transition: background-color 150ms ease, box-shadow 150ms ease;
 }
 
-.site-nav.is-scrolled {
-  background: rgba(22, 19, 15, 0.6);
+.site-nav.is-scrolled .site-nav__cta {
+  --cta-elevation: 0 4px 12px rgba(22, 19, 15, 0.25);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
@@ -269,29 +278,60 @@ main,
 }
 
 .site-nav__cta {
+  --cta-ring: var(--cta-ring-dark);
+  --cta-elevation: 0 0 0 rgba(0, 0, 0, 0);
+  --cta-ring-shadow: 0 0 0 1px var(--cta-ring);
+  position: relative;
   display: inline-block;
   padding: 8px 18px;
-  border: 1px solid rgba(255, 255, 255, 0.278);
   border-radius: 999px;
+  overflow: hidden;
+  box-shadow: var(--cta-elevation), var(--cta-ring-shadow);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   color: #ffffff;
   font-size: var(--text-caption);
   font-weight: var(--weight-medium);
   text-decoration: none;
-  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, transform 150ms ease;
+  transition: color 100ms ease, transform 150ms ease;
+}
+
+.site-nav__cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background-color: #ffffff;
+  opacity: 0;
+  transition: opacity 100ms ease;
+}
+
+@media (hover: hover) {
+  .site-nav__cta:hover::before {
+    opacity: 1;
+  }
+
+  .site-nav__cta:hover {
+    --cta-ring: #ffffff;
+    color: var(--ink);
+  }
+}
+
+.site-nav__cta::after {
+  content: "";
+  position: absolute;
+  inset: -3px -2px;
+  z-index: 1;
+}
+
+.site-nav.is-over-light .site-nav__cta {
+  --cta-ring: var(--cta-ring-light);
+  color: var(--ink);
 }
 
 .site-nav__cta:active {
   transform: scale(0.96);
-}
-
-@media (hover: hover) {
-  .site-nav__cta:hover {
-    border-color: #ffffff;
-    background-color: #ffffff;
-    color: var(--ink);
-  }
 }
 
 .hero {
@@ -360,7 +400,7 @@ main,
   margin: 0;
   font-family: var(--font-display);
   font-size: var(--text-h1);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-regular);
   line-height: 1.05;
   letter-spacing: -0.025em;
   color: #ffffff;
@@ -370,7 +410,7 @@ main,
 .hero__sub {
   margin: 0;
   max-width: 576px;
-  font-size: var(--text-body);
+  font-size: var(--text-lead);
   line-height: var(--leading-relaxed);
   color: var(--white-90);
 }
@@ -419,14 +459,14 @@ main,
   margin: 20px 0 0;
   font-family: var(--font-display);
   font-size: var(--text-card);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-regular);
   letter-spacing: -0.025em;
   line-height: 1.333;
 }
 
 .program__desc {
   margin: 8px 0 0;
-  font-size: var(--text-body);
+  font-size: var(--text-small);
   line-height: var(--leading-relaxed);
   color: var(--ink-muted);
 }
@@ -456,13 +496,32 @@ main,
   max-width: 300px;
 }
 
+/* The clip layer owns the rounded, overflow-hidden box so the video can be scaled
+   past it. Keeping the ring and the overlay on .testimonial__frame means neither is
+   affected by the clipping. */
+.testimonial__clip {
+  position: relative;
+  border-radius: 27px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px var(--outline-img);
+}
+
+/* The video is blown up 1% inside its clip. The source frame carries a stray dark
+   edge on the right and bottom that survives removing the outline, changing the
+   clip, and swapping the frame, so it is being scaled a fraction past the visible
+   box. */
+.testimonial__clip video {
+  transform: scale(1.01);
+  transform-origin: center;
+}
+
 .testimonial__frame::after {
   content: "";
   position: absolute;
   inset-inline: 0;
   bottom: 0;
   height: 45%;
-  border-radius: 0 0 24px 24px;
+  border-radius: 0 0 27px 27px;
   background: linear-gradient(to top, rgba(0, 0, 0, 0.2), transparent);
   pointer-events: none;
 }
@@ -596,9 +655,9 @@ main,
   max-width: 300px;
 
   aspect-ratio: 1080 / 1920;
-  border-radius: 24px;
+  border-radius: 27px;
   display: block;
-  box-shadow: 0 0 0 1px var(--outline-img), 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 0 1px var(--outline-img);
 }
 
 .testimonial__body {
@@ -611,18 +670,6 @@ main,
   font-size: var(--text-quote);
   line-height: 1.375;
   text-wrap: pretty;
-}
-
-.testimonial__attribution {
-  margin: 24px 0 0;
-}
-
-.testimonial__name {
-  display: block;
-  font-family: var(--font-display);
-  font-size: var(--text-body);
-  font-weight: var(--weight-semibold);
-  letter-spacing: -0.025em;
 }
 
 .retreat__img {
@@ -639,12 +686,13 @@ main,
   display: flex;
   flex-direction: column;
   align-items: center;
+  opacity: 0.8;
 }
 
 .officers__list {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 48px;
+  gap: 24px;
   width: 100%;
   margin: 48px auto 0;
   justify-items: center;
@@ -703,15 +751,17 @@ main,
 .officer__name {
   margin: 20px 0 0;
   font-family: var(--font-display);
-  font-size: var(--text-body);
-  font-weight: var(--weight-semibold);
+  font-size: var(--text-lead);
+  font-weight: var(--weight-regular);
   letter-spacing: -0.025em;
+  line-height: 1.6;
   text-align: center;
 }
 
 .officer__role {
   margin: 4px 0 0;
-  font-size: var(--text-caption);
+  font-size: var(--text-small);
+  line-height: 1.6;
   color: var(--ink-muted);
   text-align: center;
 }
@@ -787,19 +837,28 @@ main,
   padding-block: 64px;
 }
 
-.banner__title {
+.banner__figure {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-h2);
+  line-height: 1.375;
+  letter-spacing: -0.025em;
   color: #ffffff;
+  text-wrap: balance;
 }
 
-.banner__body {
-  margin: 24px auto 0;
-  max-width: 640px;
-  font-size: var(--text-body);
-  line-height: var(--leading-relaxed);
-  color: var(--white-90);
+.banner__quote {
+  margin: 0;
 }
 
-/* Fix oversized mission copy on small screens. */
+.banner__quote p {
+  margin: 0;
+}
+
+.banner__cite {
+  display: block;
+}
+
 @media (max-width: 767px) {
   .mission__statement {
     font-size: 18px;
@@ -887,19 +946,30 @@ main,
 }
 
 .cta__wordmark {
+  /* The design fades a 500px-tall region (mask onset at 45%) with the 999×317
+     wordmark flush to its bottom edge. */
+  min-height: 500px;
   margin-top: auto;
-  padding-top: 106px;
+  padding-top: 48px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
   line-height: 0;
+  -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
+}
+
+.cta__wordmark-svg,
+.cta__wordmark-shader {
+  width: min(999px, 100%);
+  aspect-ratio: 999 / 317;
 }
 
 .cta__wordmark-svg {
   display: block;
-  width: 100%;
   height: auto;
   color: #ffffff;
   opacity: 0.3;
-  -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
 }
 
 .cta__wordmark-svg [fill]:not([fill="none"]) {
@@ -912,11 +982,7 @@ main,
 
 .cta__wordmark-shader {
   display: none;
-  width: 100%;
-  aspect-ratio: 137.211 / 40.5;
   opacity: var(--wordmark-brightness);
-  -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
 }
 
 .cta__wordmark.is-shader .cta__wordmark-svg {
@@ -927,16 +993,45 @@ main,
   display: block;
 }
 
+@media (max-width: 767px) {
+  .cta__wordmark {
+    min-height: 0;
+    padding-top: 24px;
+  }
+}
+
 .float-cta {
+  --float-gap: 24px;
+  /* Where the pill lands relative to the top of the wordmark region. On the
+     wide layout the region is 500px tall with an empty band above the artwork,
+     so the design parks the pill 52px into it. Below 768px the region collapses
+     to just the artwork, so the pill parks clear of it instead. */
+  --float-park-offset: 52px;
   position: fixed;
   left: 0;
   right: 0;
-  bottom: 24px;
+  bottom: var(--float-gap);
   z-index: 40;
   display: flex;
   justify-content: center;
   transition: none;
   pointer-events: none;
+}
+
+@media (max-width: 767px) {
+  .float-cta {
+    --float-park-offset: -82px;
+  }
+}
+
+/* Parked: the pill has reached the footer wordmark, so it leaves the viewport
+   anchor and takes its place in the page instead. Anchored to the page, it
+   scrolls with the footer natively rather than being repositioned on every
+   scroll frame — which is what made it look unstable. */
+.float-cta.is-parked {
+  position: absolute;
+  bottom: auto;
+  top: var(--float-park-top, 0px);
 }
 
 .float-cta__reveal {
@@ -956,7 +1051,7 @@ main,
   -webkit-backdrop-filter: blur(12px);
   color: #ffffff;
   font-family: var(--font-ui);
-  font-size: var(--text-body);
+  font-size: var(--text-small);
   font-weight: var(--weight-medium);
   line-height: var(--leading-normal);
   text-decoration: none;
@@ -1008,7 +1103,7 @@ main,
 .float-cta__reveal {
   visibility: hidden;
   perspective: 500px;
-  perspective-origin: 50% calc(100% + var(--float-rise, 58px));
+  perspective-origin: 50% calc(100% + 58px);
 }
 
 .float-cta.is-visible .float-cta__reveal {
@@ -1021,7 +1116,7 @@ main,
   }
 
   .float-cta__pill {
-    translate: 0 var(--float-rise, 58px) -440px;
+    translate: 0 58px -440px;
     opacity: 0;
     transition: background-color 150ms ease,
                 transform 150ms ease,
