@@ -1,7 +1,5 @@
 :root {
   /* Families */
-  /* Display type is Helvetica Neue LT Std in the design; the fallbacks keep the
-     same neutral grotesque on machines that don't have the licensed cut. */
   --font-display: "Helvetica Neue LT Std", "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
   --font-ui: "Inter", system-ui, -apple-system, sans-serif;
 
@@ -12,17 +10,18 @@
 
   /* Sizes */
   --text-xs: 12px;      /* fine print: sub-labels, legal, metadata */
+  --text-label: 13px;   /* control labels: option rows, steps, field labels */
   --text-caption: 14px; /* secondary UI: help, errors, dense rows, nav */
   --text-body: 16px;    /* reading text, inputs, controls, legends */
   --text-lead: 18px;    /* lead copy: hero standfirst, officer names */
 
-  /* Display steps — headings only, never body copy */
-  --text-small: 15px;   /* card descriptions, officer roles, buttons */
+  /* Display steps */
+  --text-small: 16px;   /* card descriptions, officer roles, buttons */
   --text-card: 24px;    /* card/panel titles */
-  --text-deck: clamp(20px, 2.5vw, 28px);    /* mission statement */
-  --text-quote: clamp(24px, 3vw, 30px);     /* testimonial quote */
-  --text-h2: clamp(32px, 3.5vw, 40px);      /* section headings */
-  --text-h1: clamp(44px, 5.5vw, 60px);      /* hero title */
+  --text-deck: clamp(24px, 2.5vw, 28px);    /* mission statement */
+  --text-quote: 24px;                       /* testimonial quote */
+  --text-h2: clamp(35px, 3.5vw, 40px);      /* section headings */
+  --text-h1: clamp(40px, 5.5vw, 60px);      /* hero title */
 
   /* Line heights */
   --leading-tight: 1.1;     /* headings */

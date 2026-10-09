@@ -410,9 +410,15 @@ main,
 .hero__sub {
   margin: 0;
   max-width: 576px;
-  font-size: var(--text-lead);
+  font-size: var(--text-body);
   line-height: var(--leading-relaxed);
   color: var(--white-90);
+}
+
+@media (min-width: 760px) {
+  .hero__sub {
+    font-size: var(--text-lead);
+  }
 }
 
 .hero__actions {
@@ -466,9 +472,16 @@ main,
 
 .program__desc {
   margin: 8px 0 0;
-  font-size: var(--text-small);
+  font-size: var(--text-body);
   line-height: var(--leading-relaxed);
   color: var(--ink-muted);
+}
+
+/* The design sets card descriptions a step larger on phones than on desktop. */
+@media (min-width: 760px) {
+  .program__desc {
+    font-size: var(--text-small);
+  }
 }
 
 .testimonial {
@@ -857,13 +870,6 @@ main,
 
 .banner__cite {
   display: block;
-}
-
-@media (max-width: 767px) {
-  .mission__statement {
-    font-size: 18px;
-    line-height: var(--leading-normal);
-  }
 }
 
 .section--dark {
