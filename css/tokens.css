@@ -1,4 +1,32 @@
 :root {
+  /* Colors */
+  --ink: #16130f;
+  --ink-muted: #6a655d;
+  --paper: #ffffff;
+  --page: #f6f5f2;
+  --panel: #ffffff;
+  --field: rgba(22, 19, 15, 0.05);
+  --field-hover: rgba(22, 19, 15, 0.08);
+  --brand: #d1481f;
+  --brand-deep: #b83a16;
+  --brand-hover: var(--brand-deep);
+  --brand-soft: rgba(209, 72, 31, 0.1);
+  --brand-soft-subtle: rgba(209, 72, 31, 0.08);
+  --error: #a52f10;
+  --control-border: #716b63;
+  --border-subtle: #d9d9d9;
+  --hairline: rgba(22, 19, 15, 0.12);
+  --hairline-dark: rgba(255, 255, 255, 0.12);
+  --white-90: rgba(255, 255, 255, 0.9);
+  --white-80: rgba(255, 255, 255, 0.8);
+  --white-70: rgba(255, 255, 255, 0.7);
+  --white-55: rgba(255, 255, 255, 0.55);
+  --outline-img: oklch(0 0 0 / 0.1);
+  --outline-img-dark: oklch(1 0 0 / 0.1);
+  --cta-ring-dark: rgba(255, 255, 255, 0.28);
+  --cta-ring-light: rgba(0, 0, 0, 0.12);
+  --focus: var(--brand-deep);
+
   /* Families */
   --font-display: "Helvetica Neue LT Std", "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
   --font-ui: "Inter", system-ui, -apple-system, sans-serif;
@@ -13,15 +41,21 @@
   --text-label: 13px;   /* control labels: option rows, steps, field labels */
   --text-caption: 14px; /* secondary UI: help, errors, dense rows, nav */
   --text-body: 16px;    /* reading text, inputs, controls, legends */
+  --text-small: var(--text-body); /* compact body text: buttons, descriptions, roles */
   --text-lead: 18px;    /* lead copy: hero standfirst, officer names */
 
   /* Display steps */
-  --text-small: 16px;   /* card descriptions, officer roles, buttons */
   --text-card: 24px;    /* card/panel titles */
   --text-deck: clamp(24px, 2.5vw, 28px);    /* mission statement */
   --text-quote: 24px;                       /* testimonial quote */
   --text-h2: clamp(35px, 3.5vw, 40px);      /* section headings */
   --text-h1: clamp(40px, 5.5vw, 60px);      /* hero title */
+
+  /* Shape */
+  --radius-small: 8px;
+  --radius-panel: 18px;
+  --radius-img: 16px;
+  --radius-pill: 999px;
 
   /* Line heights */
   --leading-tight: 1.1;     /* headings */
