@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="68" height="68" viewBox="0 0 164.422 272" aria-hidden="true">
+  <defs>
+    <linearGradient id="pin-shaft" x1="347" x2="542" y1="737" y2="682" gradientUnits="userSpaceOnUse"><stop stop-color="#898d8e" offset="0"/><stop stop-color="#85898a" offset=".56"/><stop stop-color="#7e8283" offset="1"/></linearGradient>
+    <linearGradient id="pin-head" x1="210" x2="474" y1="573" y2="378" gradientUnits="userSpaceOnUse"><stop stop-color="#ef1015" offset="0"/><stop stop-color="#ed1116" offset=".54"/><stop stop-color="#eb1318" offset="1"/></linearGradient>
+    <linearGradient id="pin-body" x1="199" x2="400" y1="348" y2="279" gradientUnits="userSpaceOnUse"><stop stop-color="#df1214" offset="0"/><stop stop-color="#e01012" offset=".51"/><stop stop-color="#df1213" offset="1"/></linearGradient>
+    <linearGradient id="pin-cap" x1="132" x2="313" y1="99" y2="240" gradientUnits="userSpaceOnUse"><stop stop-color="#ed1b17" offset="0"/><stop stop-color="#ef1d17" offset=".52"/><stop stop-color="#e91a14" offset="1"/></linearGradient>
+  </defs>
+  <path d="M91.587 152.865 110.154 145.613 137.513 220.36 131.2 224 122.32 228.117c-.549-.761-1.019-1.691-1.408-2.79l-29.325-72.462Z" fill="url(#pin-shaft)" stroke="#85898A7A" stroke-linejoin="round" stroke-width="1.4"/>
+  <path d="M60.323 115.173c12.697-11.608 32.778-18.753 49.618-17.956 16.841.345 29.697 5.711 37.188 16.707 1.621 2.364 3.055 4.462 2.603 6.694-1.248 5.844-10.121 12.325-20.586 18.142-12.962 7.278-29.352 13.653-45.793 18.116-15.326 4.144-29.724 5.472-36.603 2.816-2.444-.929-3.666-2.152-4.118-3.985-2.524-10.758 1.142-22.844 8.766-31.662 2.895-3.559 6.083-6.588 8.925-8.872Z" fill="url(#pin-head)" stroke="#DF2225" stroke-linejoin="round" stroke-width="1.5"/>
+  <path d="m44.837 68.37 45.369-18.355 22.365 53.258c2.338 4.595-11.129 12.431-24.862 17.398-11.634 4.224-23.402 5.817-24.942 2.391Z" fill="url(#pin-body)"/>
+  <path d="M14.503 59.153c-2.045-8.819 6.906-18.833 19.284-26.749 13.334-8.526 30.547-14.822 45.263-16.07 14.078-1.248 24.172.903 27.598 7.783 4.064 8.208-2.816 17.956-13.839 25.898-11.183 8.048-26.589 14.716-40.986 18.062-13.733 3.188-26.058 2.736-32.353-1.274-2.736-1.753-4.303-4.224-4.967-7.65Z" fill="url(#pin-cap)" stroke="#E42622" stroke-width="1.6"/>
+</svg>
