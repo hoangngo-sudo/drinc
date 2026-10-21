@@ -120,6 +120,7 @@ select,
 
 .h2--light {
   color: #ffffff;
+  font-size: var(--text-h2-mobile);
   font-style: italic;
   line-height: 1.1;
 }
@@ -156,7 +157,7 @@ main,
   background: var(--brand);
   color: #ffffff;
   font-family: var(--font-ui);
-  font-size: var(--text-small);
+  font-size: var(--text-action);
   font-weight: var(--weight-medium);
   line-height: var(--leading-normal);
   text-decoration: none;
@@ -417,6 +418,18 @@ main,
   line-height: var(--leading-normal);
   text-align: center;
   text-wrap: pretty;
+}
+
+.mission__university {
+  white-space: nowrap;
+}
+
+.mission__icon {
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  margin-inline: 0.08em;
+  vertical-align: -0.4em;
 }
 
 .programs__grid {
@@ -770,7 +783,7 @@ main,
 
 .officer__role {
   margin: 4px 0 0;
-  font-size: var(--text-small);
+  font-size: var(--text-action);
   line-height: 1.6;
   color: var(--ink-muted);
   text-align: center;
@@ -1054,7 +1067,7 @@ main,
   -webkit-backdrop-filter: blur(12px);
   color: #ffffff;
   font-family: var(--font-ui);
-  font-size: var(--text-small);
+  font-size: var(--text-action);
   font-weight: var(--weight-medium);
   line-height: var(--leading-normal);
   text-decoration: none;
