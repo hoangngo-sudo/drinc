@@ -43,13 +43,18 @@
   --text-body: 16px;    /* reading text, inputs, controls, legends */
   --text-small: var(--text-body); /* compact body text: buttons, descriptions, roles */
   --text-lead: 18px;    /* lead copy: hero standfirst, officer names */
+  --text-action: 15px;
 
   /* Display steps */
   --text-card: 24px;    /* card/panel titles */
-  --text-deck: clamp(24px, 2.5vw, 28px);    /* mission statement */
-  --text-quote: 24px;                       /* testimonial quote */
-  --text-h2: clamp(35px, 3.5vw, 40px);      /* section headings */
-  --text-h1: clamp(40px, 5.5vw, 60px);      /* hero title */
+  --text-deck-mobile: 24px;
+  --text-deck: clamp(var(--text-deck-mobile), calc(22.514px + 0.360685vw), 28px);
+  --text-quote: 18px;
+  --text-h2-mobile: 35px;
+  --text-h2: clamp(var(--text-h2-mobile), calc(33.1425px + 0.450857vw), 40px);
+  --text-h1-mobile: 40px;
+  --text-h1: clamp(var(--text-h1-mobile), calc(32.5699px + 1.803427vw), 60px);
+  --text-form-title: 25px;
 
   /* Shape */
   --radius-small: 8px;
