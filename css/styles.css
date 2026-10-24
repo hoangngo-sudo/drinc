@@ -257,6 +257,13 @@ main,
   transition-delay: 0s;
 }
 
+@media (max-width: 759px) {
+  .site-nav__brand {
+    transition-duration: 120ms, 0s;
+    transition-delay: 0s, 120ms;
+  }
+}
+
 .site-nav.is-logo-hidden .site-nav__brand {
   transform: translateY(-110%);
   visibility: hidden;
