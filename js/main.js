@@ -3,8 +3,22 @@
 
   var nav = document.querySelector(".site-nav");
   if (nav) {
+    var directionStartY = window.scrollY;
+    var scrollDirectionThreshold = 8;
     var onNavScroll = function () {
-      nav.classList.toggle("is-scrolled", window.scrollY > 8);
+      var currentScrollY = window.scrollY;
+      nav.classList.toggle("is-scrolled", currentScrollY > 8);
+
+      if (currentScrollY <= 8) {
+        nav.classList.remove("is-logo-hidden");
+        directionStartY = currentScrollY;
+      } else if (currentScrollY - directionStartY >= scrollDirectionThreshold) {
+        nav.classList.add("is-logo-hidden");
+        directionStartY = currentScrollY;
+      } else if (directionStartY - currentScrollY >= scrollDirectionThreshold) {
+        nav.classList.remove("is-logo-hidden");
+        directionStartY = currentScrollY;
+      }
     };
     window.addEventListener("scroll", onNavScroll, { passive: true });
     onNavScroll();
