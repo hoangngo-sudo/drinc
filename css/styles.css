@@ -232,7 +232,7 @@ main,
 }
 
 .site-nav.is-scrolled .site-nav__cta {
-  --cta-elevation: 0 4px 12px rgba(22, 19, 15, 0.25);
+  --cta-elevation: 0 0 0 0 transparent;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
@@ -250,12 +250,22 @@ main,
   align-items: center;
   color: #ffffff;
   text-decoration: none;
+  transition: transform 220ms ease, visibility 0s linear 220ms;
+}
+
+.site-nav:not(.is-logo-hidden) .site-nav__brand {
+  transition-delay: 0s;
+}
+
+.site-nav.is-logo-hidden .site-nav__brand {
+  transform: translateY(-110%);
+  visibility: hidden;
 }
 
 .site-nav__logo {
   display: block;
-  width: 48px;
-  height: 48px;
+  width: 80px;
+  height: 80px;
   object-fit: contain;
 }
 
@@ -432,6 +442,13 @@ main,
   vertical-align: -0.5em;
 }
 
+.mission__welcome {
+  display: inline-block;
+  width: auto;
+  height: 1.75em;
+  vertical-align: -0.5em;
+}
+
 .programs__grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -459,16 +476,6 @@ main,
 
 .program {
   position: relative;
-}
-
-.program__pin {
-  position: absolute;
-  z-index: 1;
-  top: -45px;
-  left: 50%;
-  width: 68px;
-  height: 68px;
-  transform: translateX(-50%);
 }
 
 .program__title {
@@ -863,11 +870,17 @@ main,
 .banner__figure {
   margin: 0;
   font-family: var(--font-display);
-  font-size: var(--text-h2);
-  line-height: 1.375;
+  font-size: var(--text-deck);
+  line-height: 42px;
   letter-spacing: -0.025em;
   color: #ffffff;
   text-wrap: balance;
+}
+
+@media (min-width: 760px) {
+  .banner__figure {
+    line-height: 49px;
+  }
 }
 
 .banner__quote {
@@ -1181,6 +1194,10 @@ main,
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .site-nav__brand {
+    transition: none;
   }
 
   *,
