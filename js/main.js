@@ -33,6 +33,37 @@
   if (video) {
     video.volume = 1;
     video.muted = true;
+    if ("IntersectionObserver" in window) {
+      var videoLoader = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              if (video.preload !== "auto") {
+                video.preload = "auto";
+                video.load();
+              }
+              videoLoader.disconnect();
+            }
+          });
+        },
+        { rootMargin: "400px 0px" }
+      );
+      videoLoader.observe(video);
+    } else {
+      video.preload = "metadata";
+    }
+
+    // Nothing keeps playing once it has scrolled away.
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting && !video.paused) video.pause();
+          });
+        },
+        { threshold: 0 }
+      ).observe(video);
+    }
   }
 
   /* SVG templates */
@@ -148,68 +179,303 @@
     });
   });
 
+  /* --- Past activities: the horizontal rail --- */
   var track = document.querySelector(".gallery__track");
   var prevBtn = document.querySelector('[data-gallery="prev"]');
   var nextBtn = document.querySelector('[data-gallery="next"]');
 
-  if (!track || !prevBtn || !nextBtn) return;
+  if (track && prevBtn && nextBtn) {
+    var railStep = function () {
+      if (track.children.length < 2) return track.clientWidth;
+      var first = track.children[0];
+      var second = track.children[1];
+      var stepPx = second.getBoundingClientRect().left - first.getBoundingClientRect().left;
+      return stepPx > 0 ? stepPx : track.clientWidth;
+    };
 
-  function step() {
-    if (track.children.length < 2) return track.clientWidth;
-    var first = track.children[0];
-    var second = track.children[1];
-    var stepPx = second.getBoundingClientRect().left - first.getBoundingClientRect().left;
-    return stepPx > 0 ? stepPx : track.clientWidth;
+    var setGalleryButtons = function (scrollLeft) {
+      var focused = document.activeElement;
+
+      prevBtn.disabled = scrollLeft <= 1;
+      nextBtn.disabled = scrollLeft >= track.scrollWidth - track.clientWidth - 1;
+
+
+      if (focused === nextBtn && nextBtn.disabled && !prevBtn.disabled) {
+        prevBtn.focus();
+      } else if (focused === prevBtn && prevBtn.disabled && !nextBtn.disabled) {
+        nextBtn.focus();
+      }
+    };
+
+    var updateGalleryButtons = function () {
+      setGalleryButtons(track.scrollLeft);
+    };
+
+    var scrollByOne = function (direction) {
+      var target = track.scrollLeft + direction * railStep();
+      target = Math.max(0, Math.min(target, track.scrollWidth - track.clientWidth));
+      var next = Math.round(target);
+      var prev = Math.round(track.scrollLeft);
+      if (next === prev) {
+        setGalleryButtons(prev);
+        return;
+      }
+      // Reflect the boundary state immediately so the control no longer appears
+      // clickable after the interaction has already been committed.
+      setGalleryButtons(next);
+      track.scrollTo({ left: next, behavior: reduceMotion.matches ? "auto" : "smooth" });
+    };
+
+    prevBtn.addEventListener("click", function () {
+      scrollByOne(-1);
+    });
+
+    nextBtn.addEventListener("click", function () {
+      scrollByOne(1);
+    });
+
+    track.addEventListener("scroll", updateGalleryButtons, { passive: true });
+    window.addEventListener("resize", updateGalleryButtons);
+    updateGalleryButtons();
   }
 
-  function setGalleryButtons(scrollLeft) {
-    // Read this first: assigning `disabled` moves focus to <body> straight away,
-    // so by the time the flags are set the focused button is already forgotten.
-    var focused = document.activeElement;
+  var helix = document.querySelector("[data-helix]");
+  var helixScene = helix ? helix.querySelector("[data-helix-scene]") : null;
+  var helixCards = helix
+    ? Array.prototype.slice.call(helix.querySelectorAll(".helix__card"))
+    : [];
 
-    prevBtn.disabled = scrollLeft <= 1;
-    nextBtn.disabled = scrollLeft >= track.scrollWidth - track.clientWidth - 1;
+  if (helix && helixScene && helixCards.length > 1) {
+    var helixCount = helixCards.length;
+    // Start on the middle card, whatever the count.
+    var helixActive = Math.floor((helixCount - 1) / 2);
 
-    // Disabling the focused button would strand a keyboard user back at the top
-    // of the page. Hand focus to the control that can still be pressed.
-    if (focused === nextBtn && nextBtn.disabled && !prevBtn.disabled) {
-      prevBtn.focus();
-    } else if (focused === prevBtn && prevBtn.disabled && !nextBtn.disabled) {
-      nextBtn.focus();
-    }
+    var helixPerTurn = 13;
+    var helixCardH = 0;
+    var helixRadius = 0;
+    var helixPitch = 40; // px of travel per card
+    var helixShift = 0; // vertical offset that centres the spiral
+    var helixOffset = 0; // cards rotated away from rest
+    var helixVelocity = 0; // items per ms, for the fling
+    var helixDragging = false;
+    var helixDragVelocity = 0; // items per ms, measured from the pointer
+    var helixReturn = null; // card (or bound) the coil is travelling to
+    var helixSnap = false; // true when that target is a card, not an end
+    var helixDragAxis = "y"; // mouse drags vertically, touch drags sideways
+    var helixDragPitch = 40; // px per card for the active gesture
+    var helixLastMoveX = 0;
+    var helixLastMoveY = 0;
+    var helixLastMoveT = 0;
+    var helixStartX = 0;
+    var helixStartY = 0;
+    var helixStartOffset = 0;
+    var helixPointerX = 0;
+    var helixPointerY = 0;
+    var helixFrame = 0;
+    var helixLast = 0;
+    var helixMin = -helixActive;
+    var helixMax = helixCount - 1 - helixActive;
+    var helixGive = 0.3; // how far past an end the drag is allowed to pull
+    var helixMaxGive = 1; // items of rubber band at most
+
+    var helixResist = function (value) {
+      if (value < helixMin) value = helixMin - (helixMin - value) * helixGive;
+      else if (value > helixMax) value = helixMax + (value - helixMax) * helixGive;
+      return Math.max(helixMin - helixMaxGive, Math.min(helixMax + helixMaxGive, value));
+    };
+
+    var helixPoses = function (offset) {
+      var poses = [];
+      for (var i = 0; i < helixCount; i++) {
+        // No wrap: the cards stop at the ends instead of cycling forever.
+        var t = i - helixActive - offset;
+        var angle = (t * 360) / helixPerTurn;
+        var radians = angle * (Math.PI / 180);
+        poses.push({
+          t: t,
+          angle: angle,
+          x: Math.sin(radians) * helixRadius,
+          z: Math.cos(radians) * helixRadius - helixRadius
+        });
+      }
+      return poses;
+    };
+
+    var helixDraw = function () {
+      var poses = helixPoses(helixOffset);
+      for (var i = 0; i < helixCount; i++) {
+        var pose = poses[i];
+        // The card turns with the coil, facing outward. The source authors rotateX(-theta)
+        helixCards[i].style.transform =
+          "translate(-50%, -50%) translate3d(" +
+          pose.x.toFixed(2) + "px, " +
+          (pose.t * helixPitch + helixShift).toFixed(2) + "px, " +
+          pose.z.toFixed(2) + "px) rotateY(" +
+          pose.angle.toFixed(2) + "deg)";
+      }
+    };
+
+    var helixLayout = function () {
+      helixPerTurn = 8;
+      var gap = 30;
+      helixCardH = helixCards[0].offsetHeight;
+      helixPitch = Math.round(helixCardH * 0.3);
+      helixRadius = (helixPerTurn * (helixCardH + gap)) / (2 * Math.PI);
+      // The card at 0 deg is the face of the section, so it sits on the
+      // scene's centre line.
+      helixShift = 0;
+      helixDraw();
+    };
+    var helixTick = function (now) {
+      var dt = helixLast ? Math.min(64, now - helixLast) : 16;
+      helixLast = now;
+
+      if (helixDragging) {
+        // 1:1 with the pointer until it pulls past an end, then resisted.
+        var travel =
+          helixDragAxis === "y"
+            ? helixPointerY - helixStartY
+            : helixPointerX - helixStartX;
+        helixOffset = helixResist(helixStartOffset - travel / helixDragPitch);
+        helixReturn = null;
+        helixSnap = false;
+      } else if (helixReturn !== null) {
+        if (reduceMotion.matches) {
+          helixOffset = helixReturn;
+          helixVelocity = 0;
+          helixReturn = null;
+          helixSnap = false;
+        } else {
+          var stiffness = helixSnap ? 0.00055 : 0.00045;
+          var damping = helixSnap ? 0.047 : 0.0212;
+          var steps = 4;
+          var sub = dt / steps;
+          for (var step = 0; step < steps; step++) {
+            helixVelocity += (helixReturn - helixOffset) * stiffness * sub;
+            helixVelocity *= Math.exp(-damping * sub);
+            helixOffset += helixVelocity * sub;
+          }
+          if (
+            Math.abs(helixReturn - helixOffset) < 0.003 &&
+            Math.abs(helixVelocity) < 0.0006
+          ) {
+            helixOffset = helixReturn;
+            helixVelocity = 0;
+            helixReturn = null;
+            helixSnap = false;
+          }
+        }
+      } else {
+        helixOffset += helixVelocity * dt;
+        helixVelocity *= Math.exp(-0.006 * dt);
+        if (Math.abs(helixVelocity) < 0.0002) {
+          helixVelocity = 0;
+          if (helixOffset < helixMin) {
+            helixReturn = helixMin;
+            helixSnap = false;
+            helixVelocity = 0;
+          } else if (helixOffset > helixMax) {
+            helixReturn = helixMax;
+            helixSnap = false;
+            helixVelocity = 0;
+          } else {
+            var nearest = Math.round(helixOffset);
+            if (Math.abs(nearest - helixOffset) > 0.001) {
+              helixReturn = nearest;
+              helixSnap = true;
+            }
+          }
+        } else if (helixOffset < helixMin || helixOffset > helixMax) {
+          helixReturn = helixOffset < helixMin ? helixMin : helixMax;
+          helixSnap = false;
+          helixVelocity = Math.max(-0.003, Math.min(0.003, helixVelocity));
+        }
+      }
+
+      helixDraw();
+
+      if (helixDragging || helixReturn !== null || helixVelocity !== 0) {
+        helixFrame = requestAnimationFrame(helixTick);
+      } else {
+        helixFrame = 0;
+        helixLast = 0;
+      }
+    };
+
+    var helixStart = function () {
+      if (helixFrame) return;
+      helixLast = 0;
+      helixFrame = requestAnimationFrame(helixTick);
+    };
+
+    var helixEndDrag = function () {
+      if (!helixDragging) return;
+      helixDragging = false;
+      helix.classList.remove("helix--dragging");
+      var still = performance.now() - helixLastMoveT < 100;
+      helixVelocity = still && !reduceMotion.matches ? helixDragVelocity : 0;
+      if (helixOffset < helixMin || helixOffset > helixMax) helixVelocity = 0;
+      if (Math.abs(helixVelocity) < 0.0006) helixVelocity = 0;
+      helixStart();
+    };
+
+    helixScene.addEventListener("pointerdown", function (event) {
+      if (event.button !== 0) return;
+      // A mouse drags the coil up and down. On a touch screen a vertical drag
+      // belongs to the page scroll, so there the coil is spun sideways.
+      helixDragAxis = event.pointerType === "mouse" ? "y" : "x";
+      helixDragPitch = helixDragAxis === "y" ? helixPitch : helixPitch * 1.8;
+      helixDragging = true;
+      helixStartX = event.clientX;
+      helixStartY = event.clientY;
+      helixPointerX = event.clientX;
+      helixPointerY = event.clientY;
+      helixStartOffset = helixOffset;
+      helixVelocity = 0;
+      helixDragVelocity = 0;
+      helixLastMoveX = event.clientX;
+      helixLastMoveY = event.clientY;
+      helixLastMoveT = event.timeStamp;
+      helix.classList.add("helix--dragging");
+      if (helixScene.setPointerCapture) helixScene.setPointerCapture(event.pointerId);
+      event.preventDefault();
+      helixStart();
+    });
+
+    helixScene.addEventListener("pointermove", function (event) {
+      if (!helixDragging) return;
+      helixPointerX = event.clientX;
+      helixPointerY = event.clientY;
+
+      var elapsed = event.timeStamp - helixLastMoveT;
+      if (elapsed > 0) {
+        var moved =
+          helixDragAxis === "y"
+            ? event.clientY - helixLastMoveY
+            : event.clientX - helixLastMoveX;
+        var instant = -moved / helixDragPitch / elapsed;
+        // Smoothed so one jittery sample does not define the throw.
+        helixDragVelocity = helixDragVelocity * 0.7 + instant * 0.3;
+        helixLastMoveX = event.clientX;
+        helixLastMoveY = event.clientY;
+        helixLastMoveT = event.timeStamp;
+      }
+    });
+
+    helixScene.addEventListener("pointerup", function (event) {
+      if (helixScene.releasePointerCapture && helixScene.hasPointerCapture(event.pointerId)) {
+        helixScene.releasePointerCapture(event.pointerId);
+      }
+      helixEndDrag();
+    });
+
+    helixScene.addEventListener("pointercancel", helixEndDrag);
+    window.addEventListener("blur", helixEndDrag);
+
+    helix.classList.add("helix--3d");
+    helixLayout();
+    window.addEventListener("resize", helixLayout);
   }
-
-  function updateGalleryButtons() {
-    setGalleryButtons(track.scrollLeft);
-  }
-
-  function scrollByOne(direction) {
-    var target = track.scrollLeft + direction * step();
-    target = Math.max(0, Math.min(target, track.scrollWidth - track.clientWidth));
-    var next = Math.round(target);
-    var prev = Math.round(track.scrollLeft);
-    if (next === prev) {
-      setGalleryButtons(prev);
-      return;
-    }
-    // Reflect the boundary state immediately so the control no longer appears
-    // clickable after the interaction has already been committed.
-    setGalleryButtons(next);
-    track.scrollTo({ left: next, behavior: reduceMotion.matches ? "auto" : "smooth" });
-  }
-
-  prevBtn.addEventListener("click", function () {
-    scrollByOne(-1);
-  });
-
-  nextBtn.addEventListener("click", function () {
-    scrollByOne(1);
-  });
-
-  track.addEventListener("scroll", updateGalleryButtons, { passive: true });
-  window.addEventListener("resize", updateGalleryButtons);
-  updateGalleryButtons();
-
   /* --- Hero parallax --- */
   var heroBg = document.querySelector(".hero-bg");
   var hero = document.querySelector(".hero");

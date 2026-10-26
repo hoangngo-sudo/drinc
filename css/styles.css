@@ -143,7 +143,8 @@ main,
 
 .programs,
 .retreat,
-.gallery {
+.gallery,
+.helix {
   background: #E7E3DC;
 }
 
@@ -440,6 +441,18 @@ main,
   height: auto;
   margin-inline: 0.1em;
   vertical-align: -0.5em;
+}
+
+.mission__welcome {
+  display: inline-block;
+  width: auto;
+  height: 1.75em;
+  margin-inline: 0.08em;
+  vertical-align: -0.5em;
+}
+
+.mission__closing {
+  white-space: nowrap;
 }
 
 .programs__grid {
@@ -789,6 +802,7 @@ main,
   text-align: center;
 }
 
+/* Past activities: the horizontal photo rail. */
 .gallery__track {
   display: flex;
   gap: 32px;
@@ -844,6 +858,149 @@ main,
   gap: 12px;
 }
 
+/* Gallery helix: the whole corkscrew, laid out once and left still. js adds
+   `.helix--3d`; without it the cards fall back to a plain horizontal rail.
+   Cards share one height so the coil's pitch stays even, and take their width
+   from the photo. The section is a full viewport: the coil is the frame, and
+   the title sits over it rather than above it. */
+.helix {
+  --helix-card-h: 460px;
+  --helix-gap: 80px;
+
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  padding-block: 0;
+  background: #E7E3DC;
+  overflow: hidden;
+  scroll-margin-top: 88px;
+}
+
+.helix > .container {
+  position: absolute;
+  top: 96px;
+  inset-inline: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.helix__scene {
+  position: absolute;
+  /* Full viewport for the scene. The coil hangs off both edges -- top as well
+     as bottom -- so it reads as a structure passing through the frame rather
+     than a stack of cards that starts and stops inside it. */
+  inset: 0;
+  overflow: hidden;
+}
+
+.helix__track {
+  display: flex;
+  gap: var(--helix-gap);
+  margin: 0;
+  padding: 0 24px;
+  list-style: none;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.helix__track::-webkit-scrollbar {
+  display: none;
+}
+
+.helix__card {
+  position: relative;
+  flex: 0 0 auto;
+  height: var(--helix-card-h);
+  margin: 0;
+  border-radius: var(--radius-img);
+  overflow: hidden;
+  /* The same ring-and-soft-shadow the poster carries, so a photo card reads
+     the same here as it does in Past Activities. */
+  box-shadow: 0 0 0 1px var(--outline-img), 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+.helix__card img {
+  display: block;
+  height: 100%;
+  width: auto;
+  max-width: none;
+}
+
+/* The retreat poster hangs in front of the coil, centred on its axis: it never
+   turns, so it reads as a sheet floating in the middle of the spiral. */
+.helix__poster {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(560px, 108vw);
+  margin: 0;
+  border-radius: var(--radius-img);
+  overflow: hidden;
+  /* A backdrop inside the coil: the cards are the front face, so this sits
+     behind them and is read around their edges. */
+  transform: translate(-50%, -50%) translateZ(-200px);
+  box-shadow: 0 0 0 1px var(--outline-img), 0 24px 48px -32px rgba(22, 19, 15, 0.45);
+}
+
+.helix__poster img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.helix--3d .helix__scene {
+  perspective: 900px;
+  perspective-origin: 50% 50%;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  /* Vertical swipes stay with the page; sideways ones spin the coil. */
+  touch-action: pan-y;
+}
+
+.helix--dragging .helix__scene {
+  cursor: grabbing;
+}
+
+/* Only promoted while the pointer is actually moving the cards. */
+.helix--dragging .helix__card {
+  will-change: transform;
+}
+
+.helix--3d .helix__track {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: visible;
+  padding: 0;
+  transform-style: preserve-3d;
+}
+
+.helix--3d .helix__card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  flex: none;
+  transform: translate(-50%, -50%);
+}
+
+@media (max-width: 1199px) {
+  .helix {
+    --helix-gap: 56px;
+  }
+}
+
+@media (max-width: 699px) {
+  .helix {
+    --helix-gap: 40px;
+  }
+
+  .helix > .container {
+    top: 80px;
+  }
+}
 .banner {
   display: flex;
   align-items: center;
