@@ -257,13 +257,6 @@ main,
   transition-delay: 0s;
 }
 
-@media (max-width: 759px) {
-  .site-nav__brand {
-    transition-duration: 120ms, 0s;
-    transition-delay: 0s, 120ms;
-  }
-}
-
 .site-nav.is-logo-hidden .site-nav__brand {
   transform: translateY(-110%);
   visibility: hidden;
@@ -446,13 +439,6 @@ main,
   width: 1.75em;
   height: auto;
   margin-inline: 0.1em;
-  vertical-align: -0.5em;
-}
-
-.mission__welcome {
-  display: inline-block;
-  width: auto;
-  height: 1.75em;
   vertical-align: -0.5em;
 }
 
@@ -878,16 +864,10 @@ main,
   margin: 0;
   font-family: var(--font-display);
   font-size: var(--text-deck);
-  line-height: 42px;
+  line-height: 1.375;
   letter-spacing: -0.025em;
   color: #ffffff;
   text-wrap: balance;
-}
-
-@media (min-width: 760px) {
-  .banner__figure {
-    line-height: 49px;
-  }
 }
 
 .banner__quote {

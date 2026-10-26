@@ -8,3 +8,6 @@ vendor/*
 js/tuner.js
 .vscode/
 scripts
+package.json
+pnpm-lock.yaml
+.npmrc
