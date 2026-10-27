@@ -858,11 +858,8 @@ main,
   gap: 12px;
 }
 
-/* Gallery helix: the whole corkscrew, laid out once and left still. js adds
-   `.helix--3d`; without it the cards fall back to a plain horizontal rail.
-   Cards share one height so the coil's pitch stays even, and take their width
-   from the photo. The section is a full viewport: the coil is the frame, and
-   the title sits over it rather than above it. */
+/* Without JS the cards fall back to a horizontal rail. All helix photos use a
+  2:3 ratio; explicit sizing keeps their lazy-load layout stable. */
 .helix {
   --helix-card-h: 460px;
   --helix-gap: 80px;
@@ -924,7 +921,7 @@ main,
 .helix__card img {
   display: block;
   height: 100%;
-  width: auto;
+  width: calc(var(--helix-card-h) * 2 / 3);
   max-width: none;
 }
 

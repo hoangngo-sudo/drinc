@@ -38,10 +38,8 @@
         function (entries) {
           entries.forEach(function (entry) {
             if (entry.isIntersecting) {
-              if (video.preload !== "auto") {
-                video.preload = "auto";
-                video.load();
-              }
+              // Changing preload can start the request; load() would restart it.
+              video.preload = "metadata";
               videoLoader.disconnect();
             }
           });
@@ -194,11 +192,11 @@
     };
 
     var setGalleryButtons = function (scrollLeft) {
+      // Disabling a focused button moves focus to the document immediately.
       var focused = document.activeElement;
 
       prevBtn.disabled = scrollLeft <= 1;
       nextBtn.disabled = scrollLeft >= track.scrollWidth - track.clientWidth - 1;
-
 
       if (focused === nextBtn && nextBtn.disabled && !prevBtn.disabled) {
         prevBtn.focus();
@@ -305,7 +303,6 @@
       var poses = helixPoses(helixOffset);
       for (var i = 0; i < helixCount; i++) {
         var pose = poses[i];
-        // The card turns with the coil, facing outward. The source authors rotateX(-theta)
         helixCards[i].style.transform =
           "translate(-50%, -50%) translate3d(" +
           pose.x.toFixed(2) + "px, " +
@@ -348,6 +345,7 @@
         } else {
           var stiffness = helixSnap ? 0.00055 : 0.00045;
           var damping = helixSnap ? 0.047 : 0.0212;
+          // Smaller integration steps keep the spring stable when frames arrive late.
           var steps = 4;
           var sub = dt / steps;
           for (var step = 0; step < steps; step++) {

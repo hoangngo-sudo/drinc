@@ -7,10 +7,11 @@ import { getShaderColorFromString } from "../vendor/paper-shaders/get-shader-col
 import {
   LiquidMetalShapes,
   liquidMetalFragmentShader,
-  toProcessedLiquidMetal,
 } from "../vendor/paper-shaders/shaders/liquid-metal.js";
 
-const TEXTURE_URL = new URL("../assets/img/wordmark-metal.webp", import.meta.url).href;
+// Precomputed with toProcessedLiquidMetal; regenerate when wordmark-metal.webp changes.
+const TEXTURE_URL = new URL("../assets/img/wordmark-metal-processed.webp", import.meta.url).href;
+// Keep the metallic pattern sharp on short mobile canvases without exceeding the pixel cap.
 const MIN_PIXEL_RATIO = 6;
 const MAX_PIXEL_COUNT = 1920 * 1080;
 
@@ -21,12 +22,10 @@ const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 let mount = null;
 
-/* The shader only animates over the part of the wordmark that survives the
-   mask fade, so there is no reason to pay for it before the footer is close. */
+// The first trigger wins: an approaching footer or a post-load warm-up.
 let started = false;
 let approachObserver = null;
 
-/* Runs whichever trigger fires first, and only that one. */
 function startOnce(callback) {
   if (started) return;
   started = true;
@@ -34,9 +33,6 @@ function startOnce(callback) {
   callback();
 }
 
-/* Trigger one: the footer coming into range. This is the path for anyone who gets
-   there before the warm-up below — a jump link, a restored scroll position, or a
-   reload part way down the page. */
 function onApproach(callback) {
   if (!("IntersectionObserver" in window)) {
     startOnce(callback);
@@ -53,11 +49,6 @@ function onApproach(callback) {
   approachObserver.observe(figure);
 }
 
-/* Trigger two: once the page has loaded and the browser is idle. Fetching the
-   texture, solving it, and uploading it to WebGL is a few hundred milliseconds of
-   main-thread work, so doing it here means the metal is already drawn by the time
-   the footer is reached instead of arriving a beat late. Deferring to idle keeps
-   it off the critical path: the first paint, the hero, and the fonts go first. */
 function onIdleAfterLoad(callback) {
   const warmUp = () => {
     if ("requestIdleCallback" in window) {
@@ -119,12 +110,8 @@ function createUniforms(image) {
 }
 
 async function renderWordmark() {
-  let textureUrl;
-
   try {
-    const { pngBlob } = await toProcessedLiquidMetal(TEXTURE_URL);
-    textureUrl = URL.createObjectURL(pngBlob);
-    const image = await loadImage(textureUrl);
+    const image = await loadImage(TEXTURE_URL);
 
     figure.classList.add("is-shader");
     mount = new ShaderMount(
@@ -141,8 +128,6 @@ async function renderWordmark() {
   } catch (error) {
     figure.classList.remove("is-shader");
     console.warn("Footer shader unavailable, showing the static wordmark.", error);
-  } finally {
-    if (textureUrl) URL.revokeObjectURL(textureUrl);
   }
 }
 
