@@ -248,11 +248,10 @@
     // Start on the middle card, whatever the count.
     var helixActive = Math.floor((helixCount - 1) / 2);
 
-    var helixPerTurn = 13;
+    var helixPerTurn = 8; // cards per full turn of the coil
     var helixCardH = 0;
     var helixRadius = 0;
-    var helixPitch = 40; // px of travel per card
-    var helixShift = 0; // vertical offset that centres the spiral
+    var helixPitch = 0; // px of travel per card
     var helixOffset = 0; // cards rotated away from rest
     var helixVelocity = 0; // items per ms, for the fling
     var helixDragging = false;
@@ -260,7 +259,7 @@
     var helixReturn = null; // card (or bound) the coil is travelling to
     var helixSnap = false; // true when that target is a card, not an end
     var helixDragAxis = "y"; // mouse drags vertically, touch drags sideways
-    var helixDragPitch = 40; // px per card for the active gesture
+    var helixDragPitch = 0; // px per card, set by the gesture that starts
     var helixLastMoveX = 0;
     var helixLastMoveY = 0;
     var helixLastMoveT = 0;
@@ -275,8 +274,8 @@
     var helixMax = helixCount - 1 - helixActive;
     var helixGive = 0.3; // how far past an end the drag is allowed to pull
     var helixMaxGive = 1; // items of rubber band at most
-    var helixDofBlur = 10; // px of blur on the farthest card
-    var helixDofFocus = 0.5; // depth that still reads as sharp
+    var helixDofBlur = 0; // px of blur on the farthest card, read from CSS
+    var helixDofFocus = 0; // depth that still reads as sharp, read from CSS
     var helixBlurred = []; // last blur written per card, to skip repeat writes
 
     var helixResist = function (value) {
@@ -322,7 +321,7 @@
         helixCards[i].style.transform =
           "translate(-50%, -50%) translate3d(" +
           pose.x.toFixed(2) + "px, " +
-          (pose.t * helixPitch + helixShift).toFixed(2) + "px, " +
+          (pose.t * helixPitch).toFixed(2) + "px, " +
           pose.z.toFixed(2) + "px) rotateY(" +
           pose.angle.toFixed(2) + "deg)";
 
@@ -342,7 +341,7 @@
       var blur = parseFloat(styles.getPropertyValue("--helix-dof-blur"));
       var focus = parseFloat(styles.getPropertyValue("--helix-dof-focus"));
       var nextBlur = isNaN(blur) ? 0 : Math.max(0, blur);
-      var nextFocus = isNaN(focus) ? 0.25 : Math.min(1, Math.max(0, focus));
+      var nextFocus = isNaN(focus) ? 0 : Math.min(1, Math.max(0, focus));
       if (nextBlur === helixDofBlur && nextFocus === helixDofFocus) return false;
       helixDofBlur = nextBlur;
       helixDofFocus = nextFocus;
@@ -352,21 +351,17 @@
     var helixLayout = function () {
       helixReadDof();
 
-      helixPerTurn = 8;
       var gap = 30;
       helixCardH = helixCards[0].offsetHeight;
       helixPitch = Math.round(helixCardH * 0.3);
       helixRadius = (helixPerTurn * (helixCardH + gap)) / (2 * Math.PI);
-      // The card at 0 deg is the face of the section, so it sits on the
-      // scene's centre line.
-      helixShift = 0;
       helixDraw();
     };
 
     /* A stylesheet cannot tell anyone it changed, so the only way an edit made
        while the page is open reaches an idle coil is to look again. Two CSS
-       reads twice a second, and only while the section is on screen: no
-       frame loop, and nothing runs once it scrolls away. */
+       reads every 400ms, and only while the section is on screen: no frame
+       loop, and nothing runs once it scrolls away. */
     var helixDofPollMs = 400;
     var helixDofTimer = 0;
     var helixDofVisible = false;

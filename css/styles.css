@@ -988,6 +988,16 @@ main,
   transform: translate(-50%, -50%);
 }
 
+@media (min-width: 760px) {
+  .helix {
+    /* The coil is much wider here, so the falloff starts at the front card and
+       carries more blur: the gradient spans the coil instead of only its
+       far end. */
+    --helix-dof-focus: 0.3;
+    --helix-dof-blur: 25px;
+  }
+}
+
 @media (max-width: 1199px) {
   .helix {
     --helix-gap: 56px;
