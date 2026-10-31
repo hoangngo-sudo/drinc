@@ -275,6 +275,9 @@
     var helixMax = helixCount - 1 - helixActive;
     var helixGive = 0.3; // how far past an end the drag is allowed to pull
     var helixMaxGive = 1; // items of rubber band at most
+    var helixDofBlur = 10; // px of blur on the farthest card
+    var helixDofFocus = 0.5; // depth that still reads as sharp
+    var helixBlurred = []; // last blur written per card, to skip repeat writes
 
     var helixResist = function (value) {
       if (value < helixMin) value = helixMin - (helixMin - value) * helixGive;
@@ -293,10 +296,23 @@
           t: t,
           angle: angle,
           x: Math.sin(radians) * helixRadius,
-          z: Math.cos(radians) * helixRadius - helixRadius
+          z: Math.cos(radians) * helixRadius - helixRadius,
+          // 0 on the face of the coil, 1 at the far side of the turn.
+          depth: (1 - Math.cos(radians)) / 2
         });
       }
       return poses;
+    };
+
+    /* Blur for a card at that depth: nothing before the focal depth, then a
+       smooth rise to the full blur at the back. */
+    var helixBlurFor = function (depth) {
+      var span = 1 - helixDofFocus;
+      if (span <= 0) return depth >= 1 ? helixDofBlur : 0;
+      var t = (depth - helixDofFocus) / span;
+      if (t <= 0) return 0;
+      if (t >= 1) return helixDofBlur;
+      return t * t * (3 - 2 * t) * helixDofBlur;
     };
 
     var helixDraw = function () {
@@ -309,10 +325,33 @@
           (pose.t * helixPitch + helixShift).toFixed(2) + "px, " +
           pose.z.toFixed(2) + "px) rotateY(" +
           pose.angle.toFixed(2) + "deg)";
+
+        // Quarter-pixel steps: a card only re-blurs when it crosses one.
+        var blur = Math.round(helixBlurFor(pose.depth) * 4) / 4;
+        if (blur !== helixBlurred[i]) {
+          helixBlurred[i] = blur;
+          helixCards[i].style.filter = blur > 0 ? "blur(" + blur.toFixed(2) + "px)" : "";
+        }
       }
     };
 
+    /* Authored in CSS so blur and focal depth can be read, and tuned, there.
+       Returns true when either value moved, so the caller knows to redraw. */
+    var helixReadDof = function () {
+      var styles = getComputedStyle(helix);
+      var blur = parseFloat(styles.getPropertyValue("--helix-dof-blur"));
+      var focus = parseFloat(styles.getPropertyValue("--helix-dof-focus"));
+      var nextBlur = isNaN(blur) ? 0 : Math.max(0, blur);
+      var nextFocus = isNaN(focus) ? 0.25 : Math.min(1, Math.max(0, focus));
+      if (nextBlur === helixDofBlur && nextFocus === helixDofFocus) return false;
+      helixDofBlur = nextBlur;
+      helixDofFocus = nextFocus;
+      return true;
+    };
+
     var helixLayout = function () {
+      helixReadDof();
+
       helixPerTurn = 8;
       var gap = 30;
       helixCardH = helixCards[0].offsetHeight;
@@ -322,6 +361,30 @@
       // scene's centre line.
       helixShift = 0;
       helixDraw();
+    };
+
+    /* A stylesheet cannot tell anyone it changed, so the only way an edit made
+       while the page is open reaches an idle coil is to look again. Two CSS
+       reads twice a second, and only while the section is on screen: no
+       frame loop, and nothing runs once it scrolls away. */
+    var helixDofPollMs = 400;
+    var helixDofTimer = 0;
+    var helixDofVisible = false;
+
+    var helixPollDof = function () {
+      helixDofTimer = 0;
+      if (helixReadDof() && !helixFrame) helixDraw();
+      if (helixDofVisible) helixDofTimer = setTimeout(helixPollDof, helixDofPollMs);
+    };
+
+    var helixWatchDof = function (visible) {
+      helixDofVisible = visible;
+      if (!visible) {
+        clearTimeout(helixDofTimer);
+        helixDofTimer = 0;
+      } else if (!helixDofTimer) {
+        helixDofTimer = setTimeout(helixPollDof, helixDofPollMs);
+      }
     };
     var helixTick = function (now) {
       var dt = helixLast ? Math.min(64, now - helixLast) : 16;
@@ -402,6 +465,8 @@
 
     var helixStart = function () {
       if (helixFrame) return;
+      // Picks up a depth-of-field change made while the section was at rest.
+      helixReadDof();
       helixLast = 0;
       helixFrame = requestAnimationFrame(helixTick);
     };
@@ -473,6 +538,18 @@
     helix.classList.add("helix--3d");
     helixLayout();
     window.addEventListener("resize", helixLayout);
+
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (entries) {
+        helixWatchDof(
+          entries.some(function (entry) {
+            return entry.isIntersecting;
+          }),
+        );
+      }).observe(helix);
+    } else {
+      helixWatchDof(true);
+    }
   }
   /* --- Hero parallax --- */
   var heroBg = document.querySelector(".hero-bg");

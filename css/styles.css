@@ -862,7 +862,12 @@ main,
   2:3 ratio; explicit sizing keeps their lazy-load layout stable. */
 .helix {
   --helix-card-h: 460px;
-  --helix-gap: 80px;
+  --helix-gap: 10px;
+  /* Depth of field, the same model the Motion+ gallery shader uses: a card's
+     depth runs 0 at the front of the coil to 1 at the back, and everything
+     past --helix-dof-focus softens, up to --helix-dof-blur on the far side. */
+  --helix-dof-blur: 10px;
+  --helix-dof-focus: 0.5;
 
   position: relative;
   height: 100vh;
@@ -963,7 +968,7 @@ main,
 
 /* Only promoted while the pointer is actually moving the cards. */
 .helix--dragging .helix__card {
-  will-change: transform;
+  will-change: transform, filter;
 }
 
 .helix--3d .helix__track {
