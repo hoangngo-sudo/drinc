@@ -3,6 +3,16 @@
   --wordmark-alpha: 70;
 }
 
+/* Geist Pixel (SIL OFL, license beside it in assets/fonts). Self-hosted so the
+   mission word does not wait on a third-party host for one 26 KB face. */
+@font-face {
+  font-family: "Geist Pixel";
+  src: url("../assets/fonts/geist-pixel-latin.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 *,
 *::before,
 *::after {
@@ -105,6 +115,20 @@ select,
   top: 16px;
 }
 
+/* Spoken-only content: keeps a section's text in the accessibility tree when
+   the visible copy is drawn into an image. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
 .h2 {
   margin: 0;
   font-family: var(--font-display);
@@ -144,7 +168,7 @@ main,
 .programs,
 .retreat,
 .gallery,
-.helix {
+.poster {
   background: #E7E3DC;
 }
 
@@ -421,6 +445,19 @@ main,
   gap: 16px;
 }
 
+.mission {
+  /* The welcome sticker hangs to the bottom edge of the last line, so the
+     optical gap below the block is ~10px smaller than the half-leading above
+     it. This pads the difference back at each breakpoint. */
+  padding-bottom: 122px;
+}
+
+@media (max-width: 759px) {
+  .mission {
+    padding-bottom: 73px;
+  }
+}
+
 .mission__statement {
   margin: 0 auto;
   max-width: 576px;
@@ -453,6 +490,43 @@ main,
 
 .mission__closing {
   white-space: nowrap;
+}
+
+/* Three guest faces inside the mission paragraph, the DialKit set: pixel,
+   serif italic, hand. Each carries its accent and its own tracking, and each
+   is sized by measured x-height or cap-height so the three read at the same
+   optical size as the paragraph instead of as three pasted specimens. */
+.mission__word {
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.mission__word--jesus {
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: var(--fancy-jesus);
+  /* A step up from body so it sits closer to the welcome sticker's scale,
+     plus the serif's usual small optical lift. */
+  font-size: 1.28em;
+  letter-spacing: -0.045em;
+}
+
+.mission__word--love {
+  font-family: var(--font-hand);
+  color: var(--fancy-love);
+  /* Its x-height is 0.43em against the paragraph's 0.54em, so the optical
+     correction rides on top of the same step up. */
+  font-size: 1.6em;
+  letter-spacing: -0.035em;
+}
+
+.mission__word--pixel {
+  font-family: var(--font-pixel);
+  font-variation-settings: "ELSH" 0;
+  color: var(--fancy-pixel);
+  /* Same step up as the other two; the pixel face carries the texture. */
+  font-size: 1.12em;
+  letter-spacing: 0.01em;
 }
 
 .programs__grid {
@@ -858,197 +932,77 @@ main,
   gap: 12px;
 }
 
-/* Without JS the cards fall back to a horizontal rail. All helix photos use a
-  2:3 ratio; explicit sizing keeps their lazy-load layout stable. */
-.helix {
-  --helix-card-h: 460px;
-  --helix-gap: 10px;
-  /* Depth of field, the same model the Motion+ gallery shader uses: a card's
-     depth runs 0 at the front of the coil to 1 at the back, and everything
-     past --helix-dof-focus softens, up to --helix-dof-blur on the far side. */
-  --helix-dof-blur: 10px;
-  --helix-dof-focus: 0.5;
-
-  position: relative;
-  height: 100vh;
-  height: 100svh;
-  padding-block: 0;
-  background: #E7E3DC;
-  overflow: hidden;
-  scroll-margin-top: 88px;
-}
-
-.helix > .container {
-  position: absolute;
-  top: 96px;
-  inset-inline: 0;
-  z-index: 2;
-  pointer-events: none;
-}
-
-.helix__scene {
-  position: absolute;
-  /* Full viewport for the scene. The coil hangs off both edges -- top as well
-     as bottom -- so it reads as a structure passing through the frame rather
-     than a stack of cards that starts and stops inside it. */
-  inset: 0;
-  overflow: hidden;
-}
-
-.helix__track {
-  display: flex;
-  gap: var(--helix-gap);
-  margin: 0;
-  padding: 0 24px;
-  list-style: none;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-}
-
-.helix__track::-webkit-scrollbar {
-  display: none;
-}
-
-.helix__card {
-  position: relative;
-  flex: 0 0 auto;
-  height: var(--helix-card-h);
-  margin: 0;
+/* Poster: the printed UIC worship night sheet, centred on the band. */
+.poster__img {
+  display: block;
+  width: 100%;
+  max-width: 560px;
+  margin-inline: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
   border-radius: var(--radius-img);
-  overflow: hidden;
-  /* The same ring-and-soft-shadow the poster carries, so a photo card reads
-     the same here as it does in Past Activities. */
   box-shadow: 0 0 0 1px var(--outline-img), 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -2px rgba(0, 0, 0, 0.1);
 }
 
-.helix__card img {
-  display: block;
-  height: 100%;
-  width: calc(var(--helix-card-h) * 2 / 3);
-  max-width: none;
-}
-
-/* The retreat poster hangs in front of the coil, centred on its axis: it never
-   turns, so it reads as a sheet floating in the middle of the spiral. */
-.helix__poster {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: min(560px, 108vw);
-  margin: 0;
-  border-radius: var(--radius-img);
-  overflow: hidden;
-  /* A backdrop inside the coil: the cards are the front face, so this sits
-     behind them and is read around their edges. */
-  transform: translate(-50%, -50%) translateZ(-200px);
-  box-shadow: 0 0 0 1px var(--outline-img), 0 24px 48px -32px rgba(22, 19, 15, 0.45);
-}
-
-.helix__poster img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-.helix--3d .helix__scene {
-  perspective: 900px;
-  perspective-origin: 50% 50%;
-  cursor: grab;
-  user-select: none;
-  -webkit-user-select: none;
-  /* Vertical swipes stay with the page; sideways ones spin the coil. */
-  touch-action: pan-y;
-}
-
-.helix--dragging .helix__scene {
-  cursor: grabbing;
-}
-
-/* Only promoted while the pointer is actually moving the cards. */
-.helix--dragging .helix__card {
-  will-change: transform, filter;
-}
-
-.helix--3d .helix__track {
-  position: absolute;
-  inset: 0;
-  display: block;
-  overflow: visible;
-  padding: 0;
-  transform-style: preserve-3d;
-}
-
-.helix--3d .helix__card {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  flex: none;
-  transform: translate(-50%, -50%);
-}
-
-@media (min-width: 760px) {
-  .helix {
-    /* The coil is much wider here, so the falloff starts at the front card and
-       carries more blur: the gradient spans the coil instead of only its
-       far end. */
-    --helix-dof-focus: 0.3;
-    --helix-dof-blur: 25px;
-  }
-}
-
-@media (max-width: 1199px) {
-  .helix {
-    --helix-gap: 56px;
-  }
-}
-
-@media (max-width: 699px) {
-  .helix {
-    --helix-gap: 40px;
-  }
-
-  .helix > .container {
-    top: 80px;
-  }
-}
+/* Verse: the activity collage under a vignette, with the hand-drawn Jesus
+   artifact hanging off the bottom-right corner. The verse is drawn into the
+   artwork, so the text stays available to screen readers only. */
 .banner {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 560px;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url("../assets/img/banner.webp");
-  background-position: 0 0, 50%;
-  background-size: 100% 100%, cover;
+  overflow: hidden;
+  background-color: var(--ink);
+  background-image: url("../assets/img/verse-collage.webp");
+  background-position: 50%;
+  background-size: cover;
 }
 
-.banner__inner {
-  max-width: 768px;
-  text-align: center;
-  padding-block: 64px;
+.banner__scrim {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(
+    ellipse 66% 132% at 50% 50%,
+    rgba(22, 19, 15, 0.68) 0%,
+    rgba(22, 19, 15, 0.6) 30%,
+    rgba(22, 19, 15, 0.78) 58%,
+    rgba(22, 19, 15, 0.84) 100%
+  );
 }
 
-.banner__figure {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: var(--text-deck);
-  line-height: 1.375;
-  letter-spacing: -0.025em;
-  color: #ffffff;
-  text-wrap: balance;
+.banner__art {
+  position: absolute;
+  right: min(127px, 8.35vw);
+  bottom: 0;
+  width: min(557px, 73.3vw);
+  height: auto;
+  pointer-events: none;
 }
 
 .banner__quote {
   margin: 0;
 }
 
-.banner__quote p {
-  margin: 0;
-}
-
 .banner__cite {
   display: block;
+}
+
+@media (max-width: 767px) {
+  .banner {
+    min-height: 520px;
+  }
+
+  .banner__scrim {
+    background-color: rgba(22, 19, 15, 0.72);
+    background-image: none;
+  }
+
+  .banner__art {
+    right: 0;
+  }
 }
 
 .section--dark {
