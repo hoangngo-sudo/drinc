@@ -1,3 +1,15 @@
+/* Allo (SIL OFL, licence beside it in assets/fonts): the display face of the
+   Paper file and the drawing the wordmark was set in. One variable file, wght
+   100-900, with opsz fixed at 32 so the wordmark's optical size is baked in.
+   Lives in tokens so every page that loads the tokens gets the face. */
+@font-face {
+  font-family: "Allo";
+  src: url("../assets/fonts/allo-display.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* Colors */
   --ink: #16130f;
@@ -37,9 +49,13 @@
   --fancy-jesus: var(--brand);
   --fancy-love: #b2476c;
 
-  /* Families */
-  --font-display: "Helvetica Neue LT Std", "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
-  --font-ui: "Inter", system-ui, -apple-system, sans-serif;
+  /* Families
+     Allo is the one family for display and UI text, matching the Paper file's
+     --font-display and --font-ui. It is self-hosted in assets/fonts (licence
+     beside it). The wordmark is drawn from the same font's outlines as SVG, so it
+     never depends on the web font having arrived. */
+  --font-display: "Allo", "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  --font-ui: "Allo", "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
   /* Guest faces for the mission words: pixel, serif italic and hand. Each is
      a one-word guest, not more site families. */
   --font-serif: "Instrument Serif", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
@@ -50,6 +66,18 @@
   --weight-regular: 400;
   --weight-medium: 500;
   --weight-semibold: 600;
+
+  /* Allo axes, as set in the design file's wordmark (wght 900, opsz 32, ROND 50).
+     --font-optical-sizing is inherited by everything set in Allo. */
+  --font-optical-sizing: auto;
+  --font-weight-wordmark: 900;
+  --tracking-wordmark: -0.02em;
+  --tracking-tight: -0.025em;
+
+  /* Wordmark: the display type from the design is set in Allo's display drawing.
+     Cap-height proportions: the Ink SVG is exactly 3.9027 x 1.0336 cap heights,
+     so one --wordmark-cap renders at the same weight on every screen. */
+  --wordmark-cap: 40px;
 
   /* Sizes */
   --text-xs: 12px;      /* fine print: sub-labels, legal, metadata */
