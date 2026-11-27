@@ -9,8 +9,8 @@ import {
   liquidMetalFragmentShader,
 } from "../vendor/paper-shaders/shaders/liquid-metal.js";
 
-// Precomputed with toProcessedLiquidMetal; regenerate when wordmark-metal.webp changes.
-const TEXTURE_URL = new URL("../assets/img/wordmark-metal-processed.webp", import.meta.url).href;
+// Regenerate the precomputed texture when wordmark-rounded-trimmed.webp changes.
+const TEXTURE_URL = new URL("../assets/img/wordmark-rounded-processed.webp", import.meta.url).href;
 // Keep the metallic pattern sharp on short mobile canvases without exceeding the pixel cap.
 const MIN_PIXEL_RATIO = 6;
 const MAX_PIXEL_COUNT = 1920 * 1080;
@@ -78,7 +78,7 @@ function loadImage(src) {
   });
 }
 
-/* Uniforms and sizing mirror the LiquidMetal layer from design file:
+/* Uniforms and sizing for the LiquidMetal layer, using the library defaults:
    Default preset values with shape "none" and scale 1. */
 function createUniforms(image) {
   return {

@@ -554,8 +554,15 @@ main,
   mix-blend-mode: multiply;
 }
 
-.program {
+.program__media {
   position: relative;
+}
+
+.program__desc {
+  margin: 16px 0 0;
+  color: var(--ink-muted);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
 }
 
 .program__title {
@@ -1085,7 +1092,7 @@ main,
 }
 
 .cta__wordmark {
-  /* The design fades a 500px-tall region (mask onset at 45%) with the 999×317
+  /* The region fades a 500px-tall area (mask onset at 45%) with the 999×317
      wordmark flush to its bottom edge. */
   min-height: 500px;
   margin-top: auto;
@@ -1098,25 +1105,16 @@ main,
   mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
 }
 
-.cta__wordmark-svg,
+.cta__wordmark-static,
 .cta__wordmark-shader {
   width: min(999px, 100%);
-  aspect-ratio: 5815 / 1540;
+  aspect-ratio: 3201 / 837;
 }
 
-.cta__wordmark-svg {
+.cta__wordmark-static {
   display: block;
   height: auto;
-  color: #ffffff;
-  opacity: 0.3;
-}
-
-.cta__wordmark-svg [fill]:not([fill="none"]) {
-  fill: color-mix(in oklab, currentColor calc(var(--wordmark-alpha) * 1%), transparent);
-}
-
-.cta__wordmark-svg [stroke]:not([stroke="none"]) {
-  stroke: color-mix(in oklab, currentColor 78%, transparent);
+  opacity: calc(var(--wordmark-alpha) * 0.003);
 }
 
 .cta__wordmark-shader {
@@ -1124,7 +1122,7 @@ main,
   opacity: var(--wordmark-brightness);
 }
 
-.cta__wordmark.is-shader .cta__wordmark-svg {
+.cta__wordmark.is-shader .cta__wordmark-static {
   display: none;
 }
 
@@ -1143,7 +1141,7 @@ main,
   --float-gap: 24px;
   /* Where the pill lands relative to the top of the wordmark region. On the
      wide layout the region is 500px tall with an empty band above the artwork,
-     so the design parks the pill 52px into it. Below 768px the region collapses
+     so the pill parks 52px into it. Below 768px the region collapses
      to just the artwork, so the pill parks clear of it instead. */
   --float-park-offset: 52px;
   position: fixed;
