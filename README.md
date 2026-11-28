@@ -172,6 +172,9 @@ graph TB
 - Decorative images and the wordmark are hidden from screen readers. The nav brand link has its own label.
 - Smooth scrolling, transitions and the shader respect `prefers-reduced-motion`.
 
+## Acknowledgement
+- All graphics and contents are credited to [Grace Min](https://www.instagram.com/gmin_design/), our UIC alumni
+
 ## License
 
 MIT. See [LICENSE](LICENSE).
